@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[i4box的博客]]></title>
-  <link href="http://jinhao.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Octopress | i4box的博客]]></title>
+  <link href="http://jinhao.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
   <updated>2014-10-31T15:17:46+08:00</updated>
   <id>http://jinhao.github.io/</id>
