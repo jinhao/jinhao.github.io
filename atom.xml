@@ -4,7 +4,7 @@
   <title><![CDATA[i4box的博客]]></title>
   <link href="http://jinhao.github.io/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-10-31T13:55:03+08:00</updated>
+  <updated>2014-10-31T14:05:06+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -30,18 +30,20 @@
 
 <h3>问题整理</h3>
 
-<pre><code>* 部署失败 [error: failed to push some refs to git@github.com*****'](http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress)
+<ul>
+<li><p>部署失败 <a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">error: failed to push some refs to git@github.com*****&#8217;</a></p></li>
+<li><p>解决方法:</p>
 
-* 解决方法:
+<pre><code>  cd _deploy
 
-        cd _deploy
+  git config branch.master.remote origin
 
-        git config branch.master.remote origin
+  git config branch.master.merge refs/heads/master
 
-        git config branch.master.merge refs/heads/master
+  git pull
+</code></pre></li>
+</ul>
 
-        git pull
-</code></pre>
 ]]></content>
   </entry>
   
