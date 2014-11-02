@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | i4box的博客]]></title>
   <link href="http://jinhao.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-02T19:13:52+08:00</updated>
+  <updated>2014-11-02T23:40:55+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -33,7 +33,7 @@
 <h3>问题整理</h3>
 
 <ul>
-<li><p>部署失败 <a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">error: failed to push some refs to git@github.com*****&#8217;</a></p></li>
+<li>部署失败 <a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">error: failed to push some refs to git@github.com*****&#8217;</a></li>
 <li><p>解决方法:</p>
 
 <pre><code>  cd _deploy
@@ -44,6 +44,9 @@
 
   git pull
 </code></pre></li>
+<li><p>访问速度过慢</p></li>
+<li>解决方法
+<a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></li>
 </ul>
 
 ]]></content>
