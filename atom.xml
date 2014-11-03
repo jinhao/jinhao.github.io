@@ -4,7 +4,7 @@
   <title><![CDATA[i4box的博客]]></title>
   <link href="http://jinhao.github.io/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-03T11:59:47+08:00</updated>
+  <updated>2014-11-03T12:01:16+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -55,11 +55,11 @@
   git pull
 </code></pre></li>
 <li><p>访问速度过慢</p></li>
-<li>解决方法</li>
-<li>将博客从github同步到gitcafe上，gitcafe在国内访问速度快很多。</li>
-<li><a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></li>
-<li>若还慢可用Firefox查看下具体打开页面时哪一块比较慢</li>
-<li>通过360<a href="http://ce.cloud.360.cn/">奇云测</a>检测下全国各地访问你博客的速度</li>
+<li><p>解决方法</p></li>
+<li><p>将博客从github同步到gitcafe上，gitcafe在国内访问速度快很多。</p></li>
+<li><p><a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></p></li>
+<li><p>若还慢可用Firefox查看下具体打开页面时哪一块比较慢</p></li>
+<li><p>通过360<a href="http://ce.cloud.360.cn/">奇云测</a>检测下全国各地访问你博客的速度</p></li>
 </ul>
 
 ]]></content>
