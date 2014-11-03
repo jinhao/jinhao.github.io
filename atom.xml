@@ -4,7 +4,7 @@
   <title><![CDATA[i4box的博客]]></title>
   <link href="http://jinhao.github.io/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-03T16:36:38+08:00</updated>
+  <updated>2014-11-03T16:41:36+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -44,28 +44,28 @@
 
 <ul>
 <li>部署失败 <a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">error: failed to push some refs to git@github.com*****&#8217;</a></li>
-<li><p>解决方法:</p>
+<li>解决方法:
 
-<pre><code>  cd _deploy
-
-  git config branch.master.remote origin
-
-  git config branch.master.merge refs/heads/master
-
-  git pull
-</code></pre></li>
+<blockquote><ul>
+<li>cd _deploy</li>
+<li>git config branch.master.remote origin</li>
+<li>git config branch.master.merge refs/heads/master</li>
+<li>git pull</li>
+</ul>
+</blockquote></li>
 </ul>
 
 
-<p><strong>访问速度过慢?</strong>
-<strong>解决方法</strong></p>
+<p><strong>访问速度过慢?</strong></p>
 
-<blockquote><ol>
+<p><strong>解决方法</strong></p>
+
+<blockquote><ul>
 <li>将博客从github同步到gitcafe上，gitcafe在国内访问速度快很多</li>
 <li><a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></li>
 <li>若还慢可用Firefox查看下具体打开页面时哪一块比较慢</li>
 <li>通过360<a href="http://ce.cloud.360.cn/">奇云测</a>检测下全国各地访问你博客的速度</li>
-</ol>
+</ul>
 </blockquote>
 ]]></content>
   </entry>
