@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | i4box的博客]]></title>
   <link href="http://jinhao.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-03T11:41:35+08:00</updated>
+  <updated>2014-11-03T11:46:50+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -20,9 +20,18 @@
     <id>http://jinhao.github.io/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li</id>
     <content type="html"><![CDATA[<h3>资料整理</h3>
 
+<p>通过github pages搭建自己博客相关资料整理:</p>
+
 <ul>
 <li><p><a href="http://blog.csdn.net/grunmin/article/details/14127653">octopress博客搭建和个性化配置</a></p></li>
 <li><p><a href="https://pages.github.com/">github pages 介绍</a></p></li>
+</ul>
+
+
+<!-- more -->
+
+
+<ul>
 <li><p><a href="http://www.zhihu.com/question/20962496">如何在github上写博客(知乎)</a></p></li>
 <li><p><a href="http://octopress.org/docs/">Octopress文档</a></p></li>
 <li><p><a href="http://icodeit.org/2012/10/how-to-embed-douban-show-in-your-octopress-site/">How to Embed Douban-Show in Your Octopress Site</a></p></li>
