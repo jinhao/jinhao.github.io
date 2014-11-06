@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /404.html
+Disallow:
 
 Sitemap: http://jinhao.github.io/sitemap.xml 
