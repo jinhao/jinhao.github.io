@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Fin-wait1 | i4box的博客]]></title>
   <link href="http://jinhao.github.io/blog/categories/fin-wait1/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:20:46+08:00</updated>
+  <updated>2014-11-08T15:24:12+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -45,7 +45,7 @@
 
 <blockquote><p>FIN-WAIT-1 0      1           172.16.91.101:9981         172.16.91.107:55602</p></blockquote></li>
 <li>  tcpdump抓包如下：可有看到fin发送在服务端刚好尝试了8次
-  <img src="./2014/11/08tcpdump-retry8.png" alt=" tcpdump png " />
+  <img src="/images/2014/11/08tcpdump-retry8.png" alt=" tcpdump png " />
 <strong>结论：</strong><code>tcp_orphan_retries</code>参数为tcp对于处于orphan状态连接的重试次数</li>
 </ol>
 </li>
