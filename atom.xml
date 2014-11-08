@@ -4,7 +4,7 @@
   <title><![CDATA[i4box的博客]]></title>
   <link href="http://jinhao.github.io/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:06:07+08:00</updated>
+  <updated>2014-11-08T15:08:23+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -22,6 +22,9 @@
 关于fin_wait1状态可先参考<a href="http://huoding.com/2014/11/06/383" title="关于FIN_WAIT1">火丁笔记</a>。</p>
 
 <h2>以下是我的测试</h2>
+
+<!-- more -->
+
 
 <ul>
 <li>系统环境
@@ -113,7 +116,7 @@
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#103;&#105;&#x74;&#64;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#109;">&#103;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#x75;&#98;&#x2e;&#99;&#x6f;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x67;&#105;&#116;&#64;&#103;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 

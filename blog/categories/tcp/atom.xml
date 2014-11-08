@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tcp | i4box的博客]]></title>
   <link href="http://jinhao.github.io/blog/categories/tcp/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:06:07+08:00</updated>
+  <updated>2014-11-08T15:08:23+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -22,6 +22,9 @@
 关于fin_wait1状态可先参考<a href="http://huoding.com/2014/11/06/383" title="关于FIN_WAIT1">火丁笔记</a>。</p>
 
 <h2>以下是我的测试</h2>
+
+<!-- more -->
+
 
 <ul>
 <li>系统环境
