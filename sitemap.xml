@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://jinhao.github.io/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/</loc>
+    <loc>http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/</loc>
     <lastmod>2014-11-08T14:47:12+08:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://jinhao.github.io/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/</loc>
+    <loc>http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/</loc>
     <lastmod>2014-10-31T13:48:59+08:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://jinhao.github.io/404.html</loc>
-    <lastmod>2014-11-08T15:42:57+08:00</lastmod>
+    <loc>http://i4box.com/404.html</loc>
+    <lastmod>2014-11-08T20:19:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://jinhao.github.io/blog/archives/</loc>
-    <lastmod>2014-11-08T15:42:57+08:00</lastmod>
+    <loc>http://i4box.com/blog/archives/</loc>
+    <lastmod>2014-11-08T20:19:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://jinhao.github.io/</loc>
-    <lastmod>2014-11-08T15:42:57+08:00</lastmod>
+    <loc>http://i4box.com/</loc>
+    <lastmod>2014-11-08T20:19:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://jinhao.github.io/about/</loc>
-    <lastmod>2014-11-08T15:42:57+08:00</lastmod>
+    <loc>http://i4box.com/about/</loc>
+    <lastmod>2014-11-08T20:19:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

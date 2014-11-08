@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Octopress | i4box的博客]]></title>
-  <link href="http://jinhao.github.io/blog/categories/octopress/atom.xml" rel="self"/>
-  <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:42:57+08:00</updated>
-  <id>http://jinhao.github.io/</id>
+  <title><![CDATA[Category: Octopress | What, Why, How?]]></title>
+  <link href="http://i4box.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2014-11-08T20:19:55+08:00</updated>
+  <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
     <email><![CDATA[jinhao2011@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Github上搭建blog资料整理]]></title>
-    <link href="http://jinhao.github.io/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/"/>
+    <link href="http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/"/>
     <updated>2014-10-31T13:48:59+08:00</updated>
-    <id>http://jinhao.github.io/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li</id>
+    <id>http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li</id>
     <content type="html"><![CDATA[<h3>资料整理</h3>
 
 <p>通过github pages搭建自己博客相关资料整理:</p>
@@ -42,7 +42,7 @@
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#103;&#x69;&#116;&#64;&#103;&#105;&#116;&#104;&#117;&#x62;&#46;&#x63;&#111;&#109;">&#x67;&#105;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#103;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#98;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 

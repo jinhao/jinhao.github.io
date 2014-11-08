@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Tcp | i4box的博客]]></title>
-  <link href="http://jinhao.github.io/blog/categories/tcp/atom.xml" rel="self"/>
-  <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:42:57+08:00</updated>
-  <id>http://jinhao.github.io/</id>
+  <title><![CDATA[Category: Tcp | What, Why, How?]]></title>
+  <link href="http://i4box.com/blog/categories/tcp/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2014-11-08T20:19:55+08:00</updated>
+  <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
     <email><![CDATA[jinhao2011@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Fin_wait1状态测试]]></title>
-    <link href="http://jinhao.github.io/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/"/>
+    <link href="http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/"/>
     <updated>2014-11-08T14:47:12+08:00</updated>
-    <id>http://jinhao.github.io/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi</id>
+    <id>http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi</id>
     <content type="html"><![CDATA[<p>近日由于<a href="https://github.com/wangbin579/tcpcopy/">tcpcopy</a>群里面在讨论tcp的fin_wait1状态如何消除,以及相关系统阐述修改对fin_wait1状态的影响。
 关于fin_wait1状态可先参考<a href="http://huoding.com/2014/11/06/383" title="关于FIN_WAIT1">火丁笔记</a>。</p>
 
