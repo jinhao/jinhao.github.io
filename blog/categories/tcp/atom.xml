@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tcp | i4box的博客]]></title>
   <link href="http://jinhao.github.io/blog/categories/tcp/atom.xml" rel="self"/>
   <link href="http://jinhao.github.io/"/>
-  <updated>2014-11-08T15:08:23+08:00</updated>
+  <updated>2014-11-08T15:20:46+08:00</updated>
   <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -45,7 +45,7 @@
 
 <blockquote><p>FIN-WAIT-1 0      1           172.16.91.101:9981         172.16.91.107:55602</p></blockquote></li>
 <li>  tcpdump抓包如下：可有看到fin发送在服务端刚好尝试了8次
-  <img src="../images/2014/11/08tcpdump-retry8.png" alt=" tcpdump png " />
+  <img src="./2014/11/08tcpdump-retry8.png" alt=" tcpdump png " />
 <strong>结论：</strong><code>tcp_orphan_retries</code>参数为tcp对于处于orphan状态连接的重试次数</li>
 </ol>
 </li>
@@ -57,7 +57,7 @@
 <blockquote><p><code>net.ipv4.tcp_max_orphans = 0</code></p></blockquote></li>
 <li>  通过ss命令看不到fin-wait-1状态</li>
 <li>  抓包结果如下:
-  <img src="../images/2014/11/08orp-0.png" alt=" tcpdump png " />
+  <img src="./2014/11/08orp-0.png" alt=" tcpdump png " />
 <strong>结论：</strong>由于<code>tcp_max_prphans</code>等于0，因此tcp发送完fin包后直接发送了一个rst包给客户端 (另外经过测试，不在客户端通过iptables过滤掉发送给服务端的包，抓包结果相同，可见服务端发送完fin包后，根本没有等待客户端的ack）。</li>
 </ol>
 </li>
@@ -74,7 +74,7 @@
 <li> 观察tcp抓包，由于tcp缓冲区已满，服务端一直给客户端发送<strong>zero window probes</strong>包，没有发送fin包。</li>
 <li> 修改<code>net.ipv4.tcp_max_orphans = 0</code>,继续观察抓包，发现，一会后服务端发送了rst包，orphan状态连接消失。<br/>
 <em>tcpdump抓包如下：</em>
-  <img src="../images/2014/11/08tcpdump-fin1.jpg" alt=" tcpdump png " />
+  <img src="./2014/11/08tcpdump-fin1.jpg" alt=" tcpdump png " />
 <strong>结论：</strong> 在测试系统和对应内核下，修改系统参数<code>net.ipv4.tcp_max_orphans = 0</code>, 可消除orphan状态连接。</li>
 </ol>
 </li>
