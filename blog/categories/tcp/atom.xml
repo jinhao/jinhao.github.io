@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Tcp | What, Why, How?]]></title>
+  <title><![CDATA[Category: Tcp | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/tcp/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2014-11-08T20:21:57+08:00</updated>
+  <updated>2014-11-08T20:24:23+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
