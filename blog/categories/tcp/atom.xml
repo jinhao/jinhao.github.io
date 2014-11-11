@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tcp | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/tcp/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2014-11-08T20:24:23+08:00</updated>
+  <updated>2014-11-11T23:13:25+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -82,6 +82,8 @@
 
 
 <p>另：tcpcopy社区讨论中，有部分人测试修改后无效，可能由于老版本内核不支持，据群里面<strong>lazio大神说</strong>最新内核代码看貌似Max参数起了作用。</p>
+
+<p>关于orphan相关内核源码分析，可以参考<a href="http://blog.tsunanet.net/2011/03/out-of-socket-memory.html">http://blog.tsunanet.net/2011/03/out-of-socket-memory.html</a></p>
 
 <p><em>最后，以上结果由本人测试得出，若其中错误，还请指出。</em></p>
 ]]></content>
