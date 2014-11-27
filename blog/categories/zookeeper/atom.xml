@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Zookeeper | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/zookeeper/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2014-11-28T01:27:45+08:00</updated>
+  <id>http://i4box.com/</id>
+  <author>
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Stl Set_defference 和 Inserter使用]]></title>
+    <link href="http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
+    <updated>2014-11-27T22:12:10+08:00</updated>
+    <id>http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
+    <content type="html"><![CDATA[<p>今天在弄通过zookeeper动态更新服务列表<code>new_list</code>，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表<code>old_list</code>。</p>
+
+<!-- more -->
+
+
+<ul>
+<li><p>方法1</p>
+
+<blockquote><p>将<code>new_list</code>中每个member在<code>old_list</code>中遍历一遍，在<code>old_list</code>已经存在的member做上标记，不存在的member建立连接后加入<code>old_list</code>，全部遍历完成后，再遍历一遍<code>old_list</code>将未做标记的member移除。</p></blockquote></li>
+<li><p>方法2</p>
+
+<blockquote><p>直接使用stl中算法函数:<a href="http://www.cplusplus.com/reference/algorithm/set_difference/">std::set_difference</a>, 该算法函数可以将两个<a href="http://www.cplusplus.com/reference/set/set/">set</a>(也可以是其他的container)中前一个<a href="http://www.cplusplus.com/reference/set/set/">set</a>中包含，而后一个set中没有的member保存到另外一个<a href="http://www.cplusplus.com/reference/set/set/">set</a>中。这样我就可以很容易将<code>old_list</code>中已经不在<code>new_list</code>中得member筛选出来移除掉，另外将new_list中存在的而old_list中不存在的建立连接后加入。</p></blockquote></li>
+</ul>
+
+
+<p>使用方法如下：</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+
+void print_set(const std::set&lt;std::string&gt;&amp; s)
+{
+    std::set&lt;std::string&gt;::const_iterator itor;
+    for (itor= s.begin(); itor != s.end(); ++itor)
+    {
+        printf("%s\n", (*itor).c_str());
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    std::set&lt;std::string&gt; set1;
+    std::set&lt;std::string&gt; set2;
+
+    set1.insert("192.168.60.71:11201");
+    set1.insert("192.168.60.72:11101");
+    set1.insert("192.168.70.111:11222");
+    set1.insert("192.168.70.111:10222");
+    set1.insert("192.168.73.111:10222");
+    //printf("set1:\n");
+    //print_set(set1);
+
+    set2.insert("192.168.70.111:10222");
+    set2.insert("192.168.70.111:11222");
+    set2.insert("192.168.60.71:11201");
+    set2.insert("192.168.60.72:11101");
+    //printf("set2:\n");
+    //print_set(set2);
+
+    std::set&lt;std::string&gt; rlt;
+    std::set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(),
+    std::inserter(rlt, rlt.end()));
+
+    //printf("diff:\n");
+    print_set(rlt);
+
+    return 0;
+}
+</code></pre>
+
+<p>结果如下：</p>
+
+<blockquote><p>192.168.73.111:10222</p></blockquote>
+
+<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="www.cplusplus.com">www.cplusplus.com</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
