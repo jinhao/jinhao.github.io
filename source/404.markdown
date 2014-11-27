@@ -1,0 +1,11 @@
+---
+layout: page
+title: ""
+header: false
+date: 2014-11-03 14:36
+comments: false
+sharing: false
+footer: false
+---
+<center><h1>i4box.com 404!</h1></center>
+<script type="text/javascript" src="http://www.qq.com/404/search_children.js?edition=small" charset="utf-8"></script>
