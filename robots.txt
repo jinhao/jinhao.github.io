@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: http://i4box.com/sitemap.xml 
