@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Zookeeper | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/zookeeper/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2014-11-28T19:09:05+08:00</updated>
+  <updated>2014-12-03T18:27:45+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
 <blockquote><p>192.168.73.111:10222</p></blockquote>
 
-<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="www.cplusplus.com">www.cplusplus.com</a>.</p>
+<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="http://www.cplusplus.com">www.cplusplus.com</a>.</p>
 ]]></content>
   </entry>
   
