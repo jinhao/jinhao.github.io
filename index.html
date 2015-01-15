@@ -9,7 +9,7 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="今天在弄通过zookeeper动态更新服务列表new_list，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表old_list。 ">
+  <meta name="description" content="先看一个tcpdump的抓包 19:08:01.196965 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [S], seq 475071557, win 1460, options [mss 1460,nop,nop,sackOK, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +71,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">tcp_max_orphans引起的FIN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-15T19:12:53+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:12 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>先看一个tcpdump的抓包</p>
+
+<pre><code>19:08:01.196965 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [S], seq 475071557, win 1460, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
+19:08:01.197002 IP 172.16.91.107.6388 &gt; 172.16.91.101.10001: Flags [S.], seq 2477638798, ack 475071558, win 1460, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
+19:08:01.197216 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [.], ack 1, win 2, length 0
+19:08:03.032342 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [F.], seq 1, ack 1, win 2, length 0
+19:08:03.032505 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [R.], seq 2, ack 1, win 2, length 0
+19:08:03.032515 IP 172.16.91.107.6388 &gt; 172.16.91.101.10001: Flags [F.], seq 1, ack 2, win 2, length 0
+19:08:03.032845 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [R], seq 475071559, win 0, length 0
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -197,6 +240,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">tcp_max_orphans引起的FIN</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/11/27/stl-set-defference-he-insertershi-yong/">Stl Set_defference 和 Inserter使用</a>
       </li>
     
@@ -220,7 +267,7 @@
 	 <li class='category'><a href='/blog/categories/fin-wait1/'>fin-wait1 (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/stl/'>stl (1)</a></li>
-<li class='category'><a href='/blog/categories/tcp/'>tcp (1)</a></li>
+<li class='category'><a href='/blog/categories/tcp/'>tcp (2)</a></li>
 <li class='category'><a href='/blog/categories/zookeeper/'>zookeeper (1)</a></li>
 
  </ul>
@@ -252,7 +299,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - i4box -
+  Copyright &copy; 2015 - i4box -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253514540'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253514540%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </p>
