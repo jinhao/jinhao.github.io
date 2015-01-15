@@ -64,7 +64,7 @@ categories: stl zookeeper
 结果如下：   
 > 192.168.73.111:10222
 
-代码中std::[inserter][inserter_id]是一个模板函数，生成一个插入迭代器[insert_iterator][insert_iterator_id],详细介绍参考[www.cplusplus.com](www.cplusplus.com).
+代码中std::[inserter][inserter_id]是一个模板函数，生成一个插入迭代器[insert_iterator][insert_iterator_id],详细介绍参考[www.cplusplus.com](http://www.cplusplus.com).
 
 
 [set_difference_id]:http://www.cplusplus.com/reference/algorithm/set_difference/
