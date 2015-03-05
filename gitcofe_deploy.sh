@@ -1,3 +1,7 @@
+# error: zsh: no matches found: new_post[TCP重传相关几个参数]
+# alias rake='noglob rake'
+
+
 rake generate
 rake deploy
 
