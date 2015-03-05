@@ -95,13 +95,12 @@
 <!-- more -->
 
 
-<p>先简单说下tcp重传相关的几个参数：</p>
-
-<blockquote><p>tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。
-tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。  <br/>
-tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。<br/>
-tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。
-tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。</p></blockquote>
+<p>先简单说下tcp重传相关的几个参数：
+    tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。
+    tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。  <br/>
+    tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。<br/>
+    tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。
+    tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。</p>
 
 <p>测试方法：通过iptables过滤掉客户端的包。</p>
 
