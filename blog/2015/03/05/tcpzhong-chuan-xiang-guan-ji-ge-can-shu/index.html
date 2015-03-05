@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Zookeeper - i4box&#8217;s Blog</title>
+  <title>TCP重传相关几个参数 - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="Category: zookeeper">
-  
+  <meta name="description" content="看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。 先简单说下tcp重传相关的几个参数： tcp_orphan_retries &hellip;">
+  <meta name="keywords" content="tcp_retries">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/categories/zookeeper">
+  <link rel="canonical" href="http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -70,35 +70,113 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Zookeeper</h1>
+    
+      <h1 class="entry-title">TCP重传相关几个参数</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-05T16:58:44+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:58 pm</span></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。</p>
 
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/blog/2014/11/27/stl-set-defference-he-insertershi-yong/">Stl Set_defference 和 Inserter使用</a></h1>
-<time datetime="2014-11-27T22:12:10+08:00" pubdate><span class='month'>Nov</span> <span class='day'>27</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/stl/'>stl</a>, <a class='category' href='/blog/categories/zookeeper/'>zookeeper</a></span>
-</footer>
+<!-- more -->
 
 
-</article>
+<p>先简单说下tcp重传相关的几个参数：</p>
+
+<blockquote><p>tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。
+tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。  <br/>
+tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。<br/>
+tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。
+tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。</p></blockquote>
+
+<p>测试方法：通过iptables过滤掉客户端的包。</p>
+
+<p>测试结果：</p>
+
+<ol>
+<li>connect重试tcp_syn_retries指定次数后，若还无响应，则connect返回-1， errno:110 errstr:Connection timed out</li>
+<li>send发送数据直接返回成功copy到socket缓冲区的字节数，tcp协议栈在未收到对端ack时，重试发送，重试tcp_retries2指定次数后，不再重试，下一次再对该fd进行write操作，将返回ret=-1，errno:110, errstr:Connection timed out.</li>
+</ol>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">i4box</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-05T16:58:44+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:58 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/tcp/'>tcp</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_xqw"></a>
+	<a class="jiathis_button_evernote"></a>
+	<a class="jiathis_button_douban"></a>
+	<a class="jiathis_button_googleplus"></a>
+	<a href="http://www.jiathis.com/share?uid=1980454" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1407190313492939" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1980454"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/" title="Previous Post: tcp_max_orphans引起的FIN,RST">&laquo; tcp_max_orphans引起的FIN,RST</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

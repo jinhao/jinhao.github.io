@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2015-02-14T15:23:20+08:00</updated>
+  <updated>2015-03-05T23:49:17+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[TCP重传相关几个参数]]></title>
+    <link href="http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/"/>
+    <updated>2015-03-05T16:58:44+08:00</updated>
+    <id>http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu</id>
+    <content type="html"><![CDATA[<p>看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。</p>
+
+<!-- more -->
+
+
+<p>先简单说下tcp重传相关的几个参数：</p>
+
+<blockquote><p>tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。
+tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。  <br/>
+tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。<br/>
+tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。
+tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。</p></blockquote>
+
+<p>测试方法：通过iptables过滤掉客户端的包。</p>
+
+<p>测试结果：</p>
+
+<ol>
+<li>connect重试tcp_syn_retries指定次数后，若还无响应，则connect返回-1， errno:110 errstr:Connection timed out</li>
+<li>send发送数据直接返回成功copy到socket缓冲区的字节数，tcp协议栈在未收到对端ack时，重试发送，重试tcp_retries2指定次数后，不再重试，下一次再对该fd进行write操作，将返回ret=-1，errno:110, errstr:Connection timed out.</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[tcp_max_orphans引起的FIN,RST]]></title>
@@ -226,7 +256,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x67;&#105;&#x74;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x67;&#105;&#x74;&#64;&#103;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#99;&#111;&#109;">&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 
