@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: 
 
-Sitemap: http://i4box.com/sitemap.xml 
+Sitemap: https://jinhao.github.io/sitemap.xml 

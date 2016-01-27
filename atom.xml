@@ -1,87 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[i4box's Blog]]></title>
-  <link href="http://i4box.com/atom.xml" rel="self"/>
-  <link href="http://i4box.com/"/>
-  <updated>2015-03-05T23:54:55+08:00</updated>
-  <id>http://i4box.com/</id>
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="https://jinhao.github.io/atom.xml" rel="self"/>
+  <link href="https://jinhao.github.io/"/>
+  <updated>2016-01-27T15:39:28+08:00</updated>
+  <id>https://jinhao.github.io/</id>
   <author>
-    <name><![CDATA[i4box]]></name>
-    <email><![CDATA[jinhao2011@gmail.com]]></email>
+    <name><![CDATA[Your Name]]></name>
+    
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
-    <title type="html"><![CDATA[TCP重传相关几个参数]]></title>
-    <link href="http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/"/>
-    <updated>2015-03-05T16:58:44+08:00</updated>
-    <id>http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu</id>
-    <content type="html"><![CDATA[<p>看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。</p>
-
-<!-- more -->
-
-
-<p>先简单说下tcp重传相关的几个参数：</p>
-
-<pre><code>1. tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。 
-2. tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。    
-3. tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。  
-4. tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。 
-5. tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。
-</code></pre>
-
-<p>测试方法：通过iptables过滤掉客户端的包。</p>
-
-<p>测试结果：</p>
-
-<ol>
-<li>connect重试tcp_syn_retries指定次数后，若还无响应，则connect返回-1， errno:110 errstr:Connection timed out</li>
-<li>send发送数据直接返回成功copy到socket缓冲区的字节数，tcp协议栈在未收到对端ack时，重试发送，重试tcp_retries2指定次数后，不再重试，下一次再对该fd进行write操作，将返回ret=-1，errno:110, errstr:Connection timed out.</li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[tcp_max_orphans引起的FIN,RST]]></title>
-    <link href="http://i4box.com/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/"/>
-    <updated>2015-01-15T19:12:53+08:00</updated>
-    <id>http://i4box.com/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin</id>
-    <content type="html"><![CDATA[<p>先看一个tcpdump的抓包</p>
-
-<pre><code>19:08:01.196965 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [S], seq 475071557, win 1460, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
-19:08:01.197002 IP 172.16.91.107.6388 &gt; 172.16.91.101.10001: Flags [S.], seq 2477638798, ack 475071558, win 1460, options [mss 1460,nop,nop,sackOK,nop,wscale 10], length 0
-19:08:01.197216 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [.], ack 1, win 2, length 0
-19:08:03.032342 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [F.], seq 1, ack 1, win 2, length 0
-19:08:03.032505 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [R.], seq 2, ack 1, win 2, length 0
-19:08:03.032515 IP 172.16.91.107.6388 &gt; 172.16.91.101.10001: Flags [F.], seq 1, ack 2, win 2, length 0
-19:08:03.032845 IP 172.16.91.101.10001 &gt; 172.16.91.107.6388: Flags [R], seq 475071559, win 0, length 0
-</code></pre>
-
-<!-- more -->
-
-
-<p>客户端正常建立连接后，就调用close，抓包显示客户端先发送了FIN包，紧接着又发送了一个RST包，现象看起来实在是奇怪，google之，也未发现介绍这种场景的RST；换了台机器测试，发现4次挥手正常，于是查看tcp相关sysctl参数，发现了这个参数设置(想起来之前测试<a href="http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/">tcp_max_orphans</a>参数对TIME_WAIT影响时设置，未取消)：</p>
-
-<blockquote><p>net.ipv4.tcp_max_orphans = 0</p></blockquote>
-
-<p>关于tcp_max_orphans参数介绍</p>
-
-<blockquote><p>Maximal number of TCP sockets not attached to any user file handle, held by system. If this number is exceeded orphaned connections are reset immediately and warning is printed. This limit exists only to prevent simple DoS attacks, you must not rely on this or lower the limit artificially, but rather increase it (probably, after increasing installed memory), if network conditions require more than default value, and tune network services to linger and kill such states more aggressively. Let me to remind again: each orphan eats up to ~64 KB of unswappable memory.</p></blockquote>
-
-<p>另外一个对应参数：tcp_orphan_retries</p>
-
-<blockquote><p>How may times to retry before killing TCP connection, closed by our side. Default value 7 corresponds to  50sec-16min depending on RTO. If your machine is a loaded WEB server, you should think about lowering this value, such sockets may consume significant resources. Cf. tcp_max_orphans</p></blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Stl Set_defference 和 Inserter使用]]></title>
-    <link href="http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
+    <link href="https://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
     <updated>2014-11-27T22:12:10+08:00</updated>
-    <id>http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
+    <id>https://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
     <content type="html"><![CDATA[<p>今天在弄通过zookeeper动态更新服务列表<code>new_list</code>，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表<code>old_list</code>。</p>
 
 <!-- more -->
@@ -148,138 +84,7 @@ int main(int argc, char* argv[])
 
 <blockquote><p>192.168.73.111:10222</p></blockquote>
 
-<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="http://www.cplusplus.com">www.cplusplus.com</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Fin_wait1状态测试]]></title>
-    <link href="http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/"/>
-    <updated>2014-11-08T14:47:12+08:00</updated>
-    <id>http://i4box.com/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi</id>
-    <content type="html"><![CDATA[<p>近日由于<a href="https://github.com/wangbin579/tcpcopy/">tcpcopy</a>群里面在讨论tcp的fin_wait1状态如何消除,以及相关系统阐述修改对fin_wait1状态的影响。
-关于fin_wait1状态可先参考<a href="http://huoding.com/2014/11/06/383" title="关于FIN_WAIT1">火丁笔记</a>。</p>
-
-<h2>以下是我的测试</h2>
-
-<!-- more -->
-
-
-<ul>
-<li>系统环境
-
-<blockquote><p>ubuntu12.04  <br/>
-内核版本3.5.0-23-generic</p></blockquote></li>
-<li><p>测试场景1</p>
-
-<ol>
-<li> 服务端172.16.91.101，端口9981，客户端172.16.91.107(通过nc模拟的）</li>
-<li> 服务端设置系统参数如下：
-
-<blockquote><p><code>net.ipv4.tcp_max_orphans = 1</code><br/>
-<code>net.ipv4.tcp_orphan_retries = 8</code></p></blockquote></li>
-<li> 客户端先去连接服务端</li>
-<li> 在91.107上通过iptables过滤掉发给101的包<code>iptables -A OUTPUT -d 172.16.91.101 -j DROP</code></li>
-<li> ctrl+c关闭服务端，观察与91.107建立的连接状态如下:
-
-<blockquote><p>FIN-WAIT-1 0      1           172.16.91.101:9981         172.16.91.107:55602</p></blockquote></li>
-<li>  tcpdump抓包如下：可有看到fin发送在服务端刚好尝试了8次
-  <img src="http://i4box.com/images/2014/11/08tcpdump-retry8.png" alt=" tcpdump png " />
-<strong>结论：</strong><code>tcp_orphan_retries</code>参数为tcp对于处于orphan状态连接的重试次数</li>
-</ol>
-</li>
-<li><p>测试场景2</p>
-
-<ol>
-<li> 与场景1相同，只修改系统参数如下：
-
-<blockquote><p><code>net.ipv4.tcp_max_orphans = 0</code></p></blockquote></li>
-<li>  通过ss命令看不到fin-wait-1状态</li>
-<li>  抓包结果如下:
-  <img src="http://i4box.com/images/2014/11/08orp-0.png" alt=" tcpdump png " />
-<strong>结论：</strong>由于<code>tcp_max_prphans</code>等于0，因此tcp发送完fin包后直接发送了一个rst包给客户端 (另外经过测试，不在客户端通过iptables过滤掉发送给服务端的包，抓包结果相同，可见服务端发送完fin包后，根本没有等待客户端的ack）。</li>
-</ol>
-</li>
-<li><p>测试场景3</p>
-
-<ol>
-<li> 客户端（91.107）连接上服务端（91.101）后，服务端发送大量数据给客户端，直到客户接收缓冲区满了为止，而客户端不接收数据；</li>
-<li> 内核参数如下：
-
-<blockquote><p><code>net.ipv4.tcp_max_orphans = 1</code><br/>
-<code>net.ipv4.tcp_orphan_retries = 1</code></p></blockquote></li>
-<li> 等客户端接收缓存区满了之后，ctrl + c关闭服务端</li>
-<li> 观察tcp连接状态，处于orphan状态</li>
-<li> 观察tcp抓包，由于tcp缓冲区已满，服务端一直给客户端发送<strong>zero window probes</strong>包，没有发送fin包。</li>
-<li> 修改<code>net.ipv4.tcp_max_orphans = 0</code>,继续观察抓包，发现，一会后服务端发送了rst包，orphan状态连接消失。<br/>
-<em>tcpdump抓包如下：</em>
-  <img src="http://i4box.com/images/2014/11/08tcpdump-fin1.jpg" alt=" tcpdump png " />
-<strong>结论：</strong> 在测试系统和对应内核下，修改系统参数<code>net.ipv4.tcp_max_orphans = 0</code>, 可消除orphan状态连接。</li>
-</ol>
-</li>
-</ul>
-
-
-<p>另：tcpcopy社区讨论中，有部分人测试修改后无效，可能由于老版本内核不支持，据群里面<strong>lazio大神说</strong>最新内核代码看貌似Max参数起了作用。</p>
-
-<p>关于orphan相关内核源码分析，可以参考<a href="http://blog.tsunanet.net/2011/03/out-of-socket-memory.html">http://blog.tsunanet.net/2011/03/out-of-socket-memory.html</a></p>
-
-<p><em>最后，以上结果由本人测试得出，若其中错误，还请指出。</em></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Github上搭建blog资料整理]]></title>
-    <link href="http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/"/>
-    <updated>2014-10-31T13:48:59+08:00</updated>
-    <id>http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li</id>
-    <content type="html"><![CDATA[<h3>资料整理</h3>
-
-<p>通过github pages搭建自己博客相关资料整理:</p>
-
-<ul>
-<li><a href="http://blog.csdn.net/grunmin/article/details/14127653">octopress博客搭建和个性化配置</a></li>
-</ul>
-
-
-<!-- more -->
-
-
-<ul>
-<li><p><a href="https://pages.github.com/">github pages 介绍</a></p></li>
-<li><p><a href="http://www.zhihu.com/question/20962496">如何在github上写博客(知乎)</a></p></li>
-<li><p><a href="http://octopress.org/docs/">Octopress文档</a></p></li>
-<li><p><a href="http://icodeit.org/2012/10/how-to-embed-douban-show-in-your-octopress-site/">How to Embed Douban-Show in Your Octopress Site</a></p></li>
-<li><p><a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">象写程序一样写博客：搭建基于github的博客</a></p></li>
-<li><p><a href="http://blog.csdn.net/lcliliil/article/details/13727927">添加统计和摘要显示</a></p></li>
-</ul>
-
-
-<h3>问题整理</h3>
-
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#103;&#105;&#x74;&#x40;&#x67;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#111;&#109;">&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
-
-<p><strong>解决方法</strong></p>
-
-<blockquote><ul>
-<li><code>cd _deploy</code></li>
-<li><code>git config branch.master.remote origin</code></li>
-<li><code>git config branch.master.merge refs/heads/master</code></li>
-<li><code>git pull</code></li>
-</ul>
-</blockquote>
-
-<p><strong>访问速度过慢?</strong></p>
-
-<p><strong>解决方法</strong></p>
-
-<blockquote><ul>
-<li>将博客从github同步到gitcafe上，gitcafe在国内访问速度快很多</li>
-<li><a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></li>
-<li>若还慢可用Firefox查看下具体打开页面时哪一块比较慢</li>
-<li>通过360<a href="http://ce.cloud.360.cn/">奇云测</a>检测下全国各地访问你博客的速度</li>
-</ul>
-</blockquote>
+<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="www.cplusplus.com">www.cplusplus.com</a>.</p>
 ]]></content>
   </entry>
   
