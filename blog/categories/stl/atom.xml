@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Stl | My Octopress Blog]]></title>
-  <link href="https://jinhao.github.io/blog/categories/stl/atom.xml" rel="self"/>
-  <link href="https://jinhao.github.io/"/>
-  <updated>2016-01-27T15:48:09+08:00</updated>
-  <id>https://jinhao.github.io/</id>
+  <link href="http://jinhao.github.io/blog/categories/stl/atom.xml" rel="self"/>
+  <link href="http://jinhao.github.io/"/>
+  <updated>2016-01-27T16:54:25+08:00</updated>
+  <id>http://jinhao.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Stl Set_defference 和 Inserter使用]]></title>
-    <link href="https://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
+    <link href="http://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
     <updated>2014-11-27T22:12:10+08:00</updated>
-    <id>https://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
+    <id>http://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
     <content type="html"><![CDATA[<p>今天在弄通过zookeeper动态更新服务列表<code>new_list</code>，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表<code>old_list</code>。</p>
 
 <!-- more -->
