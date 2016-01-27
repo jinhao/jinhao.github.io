@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2016-01-27T17:54:53+08:00</updated>
+  <id>http://i4box.com/</id>
+  <author>
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Github上搭建blog资料整理]]></title>
+    <link href="http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/"/>
+    <updated>2014-10-31T13:48:59+08:00</updated>
+    <id>http://i4box.com/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li</id>
+    <content type="html"><![CDATA[<h3>资料整理</h3>
+
+<p>通过github pages搭建自己博客相关资料整理:</p>
+
+<ul>
+<li><a href="http://blog.csdn.net/grunmin/article/details/14127653">octopress博客搭建和个性化配置</a></li>
+</ul>
+
+
+<!-- more -->
+
+
+<ul>
+<li><p><a href="https://pages.github.com/">github pages 介绍</a></p></li>
+<li><p><a href="http://www.zhihu.com/question/20962496">如何在github上写博客(知乎)</a></p></li>
+<li><p><a href="http://octopress.org/docs/">Octopress文档</a></p></li>
+<li><p><a href="http://icodeit.org/2012/10/how-to-embed-douban-show-in-your-octopress-site/">How to Embed Douban-Show in Your Octopress Site</a></p></li>
+<li><p><a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">象写程序一样写博客：搭建基于github的博客</a></p></li>
+<li><p><a href="http://blog.csdn.net/lcliliil/article/details/13727927">添加统计和摘要显示</a></p></li>
+</ul>
+
+
+<h3>问题整理</h3>
+
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#103;&#105;&#116;&#64;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+
+<p><strong>解决方法</strong></p>
+
+<blockquote><ul>
+<li><code>cd _deploy</code></li>
+<li><code>git config branch.master.remote origin</code></li>
+<li><code>git config branch.master.merge refs/heads/master</code></li>
+<li><code>git pull</code></li>
+</ul>
+</blockquote>
+
+<p><strong>访问速度过慢?</strong></p>
+
+<p><strong>解决方法</strong></p>
+
+<blockquote><ul>
+<li>将博客从github同步到gitcafe上，gitcafe在国内访问速度快很多</li>
+<li><a href="http://imxylz.com/blog/2013/09/22/move-google-fonts-to-local-server/">google字体下载到本地</a></li>
+<li>若还慢可用Firefox查看下具体打开页面时哪一块比较慢</li>
+<li>通过360<a href="http://ce.cloud.360.cn/">奇云测</a>检测下全国各地访问你博客的速度</li>
+</ul>
+</blockquote>
+]]></content>
+  </entry>
+  
+</feed>

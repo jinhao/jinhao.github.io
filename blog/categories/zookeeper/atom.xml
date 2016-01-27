@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Zookeeper | My Octopress Blog]]></title>
-  <link href="http://jinhao.github.io/blog/categories/zookeeper/atom.xml" rel="self"/>
-  <link href="http://jinhao.github.io/"/>
-  <updated>2016-01-27T17:17:41+08:00</updated>
-  <id>http://jinhao.github.io/</id>
+  <title><![CDATA[Category: Zookeeper | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/zookeeper/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2016-01-27T17:54:53+08:00</updated>
+  <id>http://i4box.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
-    
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
     <title type="html"><![CDATA[Stl Set_defference 和 Inserter使用]]></title>
-    <link href="http://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
+    <link href="http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong/"/>
     <updated>2014-11-27T22:12:10+08:00</updated>
-    <id>http://jinhao.github.io/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
+    <id>http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong</id>
     <content type="html"><![CDATA[<p>今天在弄通过zookeeper动态更新服务列表<code>new_list</code>，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表<code>old_list</code>。</p>
 
 <!-- more -->
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
 <blockquote><p>192.168.73.111:10222</p></blockquote>
 
-<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="www.cplusplus.com">www.cplusplus.com</a>.</p>
+<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="http://www.cplusplus.com">www.cplusplus.com</a>.</p>
 ]]></content>
   </entry>
   
