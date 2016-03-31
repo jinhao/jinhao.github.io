@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Golang | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/golang/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2016-03-31T11:32:08+08:00</updated>
+  <id>http://i4box.com/</id>
+  <author>
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Golang Map 在range期间delete操作安全?]]></title>
+    <link href="http://i4box.com/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/"/>
+    <updated>2016-03-31T11:21:58+08:00</updated>
+    <id>http://i4box.com/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan</id>
+    <content type="html"><![CDATA[<h2>详细介绍：</h2>
+
+<p><a href="http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop">http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop</a></p>
+]]></content>
+  </entry>
+  
+</feed>

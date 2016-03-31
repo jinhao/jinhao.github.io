@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Tcp - i4box&#8217;s Blog</title>
+  <title>Golang Map 在range期间delete操作安全? - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="Category: tcp">
-  
+  <meta name="description" content="详细介绍： http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop
+">
+  <meta name="keywords" content="golang map safe">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/categories/tcp">
+  <link rel="canonical" href="http://i4box.com/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -70,66 +71,94 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Tcp</h1>
+    
+      <h1 class="entry-title">Golang Map 在range期间delete操作安全?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-31T11:21:58+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:21 am</span></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h2>详细介绍：</h2>
 
-  
-  <h2>2015</h2>
-
-<article>
-  
-<h1><a href="/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/">TCP重传相关几个参数</a></h1>
-<time datetime="2015-03-05T16:58:44+08:00" pubdate><span class='month'>Mar</span> <span class='day'>05</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/tcp/'>tcp</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">tcp_max_orphans引起的FIN,RST</a></h1>
-<time datetime="2015-01-15T19:12:53+08:00" pubdate><span class='month'>Jan</span> <span class='day'>15</span> <span class='year'>2015</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/tcp/'>tcp</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/">Fin_wait1状态测试</a></h1>
-<time datetime="2014-11-08T14:47:12+08:00" pubdate><span class='month'>Nov</span> <span class='day'>08</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/fin-wait1/'>fin-wait1</a>, <a class='category' href='/blog/categories/tcp/'>tcp</a></span>
-</footer>
-
-
-</article>
-
+<p><a href="http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop">http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop</a></p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">i4box</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-31T11:21:58+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:21 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/golang/'>golang</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_xqw"></a>
+	<a class="jiathis_button_evernote"></a>
+	<a class="jiathis_button_douban"></a>
+	<a class="jiathis_button_googleplus"></a>
+	<a href="http://www.jiathis.com/share?uid=1980454" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1407190313492939" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1980454"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/" title="Previous Post: TCP重传相关几个参数">&laquo; TCP重传相关几个参数</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

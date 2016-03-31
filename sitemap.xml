@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://i4box.com/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/</loc>
+    <lastmod>2016-03-31T11:21:58+08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/</loc>
     <lastmod>2015-03-05T16:58:44+08:00</lastmod>
     <priority>0.8</priority>
@@ -27,25 +32,25 @@
   </url>
   <url>
     <loc>http://i4box.com/404.html</loc>
-    <lastmod>2016-01-28T08:49:48+08:00</lastmod>
+    <lastmod>2016-03-31T11:32:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://i4box.com/</loc>
-    <lastmod>2016-01-28T08:49:48+08:00</lastmod>
+    <lastmod>2016-03-31T11:32:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://i4box.com/blog/archives/</loc>
-    <lastmod>2016-01-28T08:49:48+08:00</lastmod>
+    <lastmod>2016-03-31T11:32:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://i4box.com/about/</loc>
-    <lastmod>2016-01-28T08:49:48+08:00</lastmod>
+    <lastmod>2016-03-31T11:32:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
