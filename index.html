@@ -9,7 +9,8 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="详细介绍： http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop
+  <meta name="description" content="参考 https://texlution.com/post/golang-lock-free-values-with-atomic-value/
+https://golang.org/pkg/sync/atomic/#example_Value_readMostly
 ">
   
 
@@ -78,7 +79,71 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/">Golang Map 在range期间delete操作安全?</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-31T11:46:51+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:46 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>参考</h2>
+
+<p><a href="https://texlution.com/post/golang-lock-free-values-with-atomic-value/">https://texlution.com/post/golang-lock-free-values-with-atomic-value/</a>
+<a href="https://golang.org/pkg/sync/atomic/#example_Value_readMostly">https://golang.org/pkg/sync/atomic/#example_Value_readMostly</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/31/race-free-li-jie/">Race Free 理解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-31T11:45:56+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:45 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>参考</h2>
+
+<p><a href="http://preshing.com/20130618/atomic-vs-non-atomic-operations/">http://preshing.com/20130618/atomic-vs-non-atomic-operations/</a>
+<a href="https://software.intel.com/en-us/blogs/2013/01/06/benign-data-races-what-could-possibly-go-wrong">https://software.intel.com/en-us/blogs/2013/01/06/benign-data-races-what-could-possibly-go-wrong</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/">Golang Map 学习</a></h1>
     
     
       <p class="meta">
@@ -94,7 +159,83 @@
   </header>
 
 
-  <div class="entry-content"><h2>详细介绍：</h2>
+  <div class="entry-content"><h3>一、定义</h3>
+
+<ol>
+<li><h5>大概是这个样子的：</h5>
+
+<p><code>map[KeyType]ValueType</code></p></li>
+<li><h5>传值or传引用</h5>
+
+<p>golang map和string slice一样都为引用类型，传递时默认就是传指针的；</p></li>
+<li><h5>声明一个map</h5>
+
+<p><code>var m map[string]int</code>, m默认值为nil，如果直接使用会引起panic，必须先初始化；</p></li>
+<li><h5>初始化</h5>
+
+<p><code>m = make(map[string]int)</code>或者直接定义 <code>m := map[string]int{}</code>;</p></li>
+<li><h5>插入</h5>
+
+<p><code>m["hi"] = 1</code>, key不存在相当于插入，存在相当于覆盖</p></li>
+<li><h5>删除</h5>
+
+<p><code>delete(m, "hi")</code>,key不存在也没有关系，不会进行任何操作；</p></li>
+<li><h5>判断key是否存在</h5>
+
+<p><code>v, ok := m["hi"]</code> key存在则ok返回为<code>true</code>，不存在ok未<code>false</code></p></li>
+<li><h5>遍历</h5>
+
+<p><code>for k, v := range map</code></p></li>
+</ol>
+
+
+<h3>二、map遍历操作是无序的</h3>
+
+<p><strong>example</strong></p>
+
+<pre><code>package main
+
+import "fmt"
+
+func main() {
+    var m map[int]string
+    m = make(map[int]string)
+    for i := 0; i &lt; 10; i++ {
+        m[i] = "hi" 
+    }
+
+    for i := 0; i &lt; 5; i++ {
+        for k := range m {
+            fmt.Print(k)
+            fmt.Print(" ")
+        }
+        fmt.Println()
+    }
+}
+</code></pre>
+
+<p> <strong>result:</strong></p>
+
+<pre><code>4 5 6 9 7 8 0 1 2 3
+1 2 3 7 8 0 5 6 9 4
+4 5 6 9 8 0 1 2 3 7
+4 5 6 9 7 8 0 1 2 3
+1 2 3 7 8 0 5 6 9 4    
+</code></pre>
+
+<p> 需要有序遍历只能自己再弄一个sorted slice了，参考<a href="https://blog.golang.org/go-maps-in-action#TOC_7.">官方文档</a></p>
+
+<h3>三、并发访问安全</h3>
+
+<p> <a href="https://blog.golang.org/go-maps-in-action#TOC_6.">https://blog.golang.org/go-maps-in-action#TOC_6.</a></p>
+
+<h3>四、在range期间delete操作安全</h3>
+
+<h4>结论</h4>
+
+<p>range期间delete操作是安全的</p>
+
+<h4>详细介绍</h4>
 
 <p><a href="http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop">http://stackoverflow.com/questions/23229975/is-it-safe-to-remove-selected-keys-from-golang-map-within-a-range-loop</a></p>
 </div>
@@ -306,7 +447,15 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/">Golang Map 在range期间delete操作安全?</a>
+        <a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/31/race-free-li-jie/">Race Free 理解</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/">Golang Map 学习</a>
       </li>
     
       <li class="post">
@@ -315,14 +464,6 @@
     
       <li class="post">
         <a href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">tcp_max_orphans引起的FIN,RST</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/27/stl-set-defference-he-insertershi-yong/">Stl Set_defference 和 Inserter使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/">Fin_wait1状态测试</a>
       </li>
     
   </ul>
