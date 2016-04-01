@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Golang | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/golang/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2016-04-01T13:37:22+08:00</updated>
+  <updated>2016-04-01T13:40:44+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -29,7 +29,8 @@
 <p>golang map和string slice一样都为引用类型，传递时默认就是传指针的；</p></li>
 <li><h5>声明一个map</h5>
 
-<p><code>var m map[string]int</code>, m默认值为nil，如果直接使用会引起panic，必须先初始化；</p></li>
+<p><code>var m map[string]int</code>, m默认值为nil，如果直接使用会引起panic，必须先初始化；
+<!-- more --></p></li>
 <li><h5>初始化</h5>
 
 <p><code>m = make(map[string]int)</code>或者直接定义 <code>m := map[string]int{}</code>;</p></li>
