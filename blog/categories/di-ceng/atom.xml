@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 底层 | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/di-ceng/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2016-04-06T09:17:31+08:00</updated>
+  <updated>2016-04-06T09:22:47+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Data Race学习]]></title>
-    <link href="http://i4box.com/blog/2016/03/31/race-free-li-jie/"/>
-    <updated>2016-03-31T11:45:56+08:00</updated>
-    <id>http://i4box.com/blog/2016/03/31/race-free-li-jie</id>
+    <link href="http://i4box.com/blog/2016/04/05/race-free-li-jie/"/>
+    <updated>2016-04-05T20:45:56+08:00</updated>
+    <id>http://i4box.com/blog/2016/04/05/race-free-li-jie</id>
     <content type="html"><![CDATA[<p>最近准备将<a href="https://github.com/Terry-Mao/gopush-cluster/blob/master/rpc/rand_lb.go#L232">gopush代码中</a>rpc模块提出来复用一下，看到这样段代码，很是不解：</p>
 
 <pre><code>tmpClients := make(map[string]*WeightRpc, len(r.Clients))

@@ -9,9 +9,8 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="参考 https://texlution.com/post/golang-lock-free-values-with-atomic-value/
-https://golang.org/pkg/sync/atomic/#example_Value_readMostly
-">
+  <meta name="description" content="最近准备将gopush代码中rpc模块提出来复用一下，看到这样段代码，很是不解： tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+for addr, client := range r.Clients { if client &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,7 +78,7 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/04/05/race-free-li-jie/">Data Race学习</a></h1>
     
     
       <p class="meta">
@@ -88,39 +87,7 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
 
 
 
-<time class='entry-date' datetime='2016-03-31T11:46:51+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:46 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>参考</h2>
-
-<p><a href="https://texlution.com/post/golang-lock-free-values-with-atomic-value/">https://texlution.com/post/golang-lock-free-values-with-atomic-value/</a>
-<a href="https://golang.org/pkg/sync/atomic/#example_Value_readMostly">https://golang.org/pkg/sync/atomic/#example_Value_readMostly</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/31/race-free-li-jie/">Data Race学习</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2016-03-31T11:45:56+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:45 am</span></time>
+<time class='entry-date' datetime='2016-04-05T20:45:56+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>8:45 pm</span></time>
         
       </p>
     
@@ -147,8 +114,40 @@ r.Clients = tmpClients
   
   
     <footer>
-      <a rel="full-article" href="/blog/2016/03/31/race-free-li-jie/">继续阅读 &rarr;</a>
+      <a rel="full-article" href="/blog/2016/04/05/race-free-li-jie/">继续阅读 &rarr;</a>
     </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-31T11:46:51+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>11:46 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>参考</h2>
+
+<p><a href="https://texlution.com/post/golang-lock-free-values-with-atomic-value/">https://texlution.com/post/golang-lock-free-values-with-atomic-value/</a>
+<a href="https://golang.org/pkg/sync/atomic/#example_Value_readMostly">https://golang.org/pkg/sync/atomic/#example_Value_readMostly</a></p>
+</div>
+  
   
 
 
@@ -400,11 +399,11 @@ r.Clients = tmpClients
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a>
+        <a href="/blog/2016/04/05/race-free-li-jie/">Data Race学习</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/31/race-free-li-jie/">Data Race学习</a>
+        <a href="/blog/2016/03/31/golang-atomic-dot-value/">Golang atomic.Value</a>
       </li>
     
       <li class="post">
