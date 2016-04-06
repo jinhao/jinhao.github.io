@@ -9,7 +9,8 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="最近准备将gopush代码中rpc模块提出来复用一下，看到这样段代码，很是不解： tmpClients := make(map[string]*WeightRpc, len(r.Clients)) for addr, client := range r.Clients { if client &hellip;">
+  <meta name="description" content="最近准备将gopush代码中rpc模块提出来复用一下，看到这样段代码，很是不解： tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+for addr, client := range r.Clients { if client &hellip;">
   <meta name="keywords" content="race">
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,18 +93,18 @@
 
 <div class="entry-content"><p>最近准备将<a href="https://github.com/Terry-Mao/gopush-cluster/blob/master/rpc/rand_lb.go#L232">gopush代码中</a>rpc模块提出来复用一下，看到这样段代码，很是不解：</p>
 
-<pre><code>        tmpClients := make(map[string]*WeightRpc, len(r.Clients))
-        for addr, client := range r.Clients {
-            if client == nil {
-                continue
-            }
-            tmpClients[addr] = client
-            if client.Addr == retryAddr {
-                client.Client = rpcTmp
-            }
-        }
-        // atomic update clients
-        r.Clients = tmpClients
+<pre><code>tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+for addr, client := range r.Clients {
+    if client == nil {
+        continue
+    }
+    tmpClients[addr] = client
+    if client.Addr == retryAddr {
+        client.Client = rpcTmp
+    }
+}
+// atomic update clients
+r.Clients = tmpClients
 </code></pre>
 
 <p> <!-- more --></p>

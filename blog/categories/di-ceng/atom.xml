@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 底层 | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/di-ceng/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2016-04-06T09:02:03+08:00</updated>
+  <updated>2016-04-06T09:17:31+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -20,18 +20,18 @@
     <id>http://i4box.com/blog/2016/03/31/race-free-li-jie</id>
     <content type="html"><![CDATA[<p>最近准备将<a href="https://github.com/Terry-Mao/gopush-cluster/blob/master/rpc/rand_lb.go#L232">gopush代码中</a>rpc模块提出来复用一下，看到这样段代码，很是不解：</p>
 
-<pre><code>        tmpClients := make(map[string]*WeightRpc, len(r.Clients))
-        for addr, client := range r.Clients {
-            if client == nil {
-                continue
-            }
-            tmpClients[addr] = client
-            if client.Addr == retryAddr {
-                client.Client = rpcTmp
-            }
-        }
-        // atomic update clients
-        r.Clients = tmpClients
+<pre><code>tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+for addr, client := range r.Clients {
+    if client == nil {
+        continue
+    }
+    tmpClients[addr] = client
+    if client.Addr == retryAddr {
+        client.Client = rpcTmp
+    }
+}
+// atomic update clients
+r.Clients = tmpClients
 </code></pre>
 
 <p> <!-- more --></p>

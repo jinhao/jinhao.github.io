@@ -129,18 +129,18 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
 
   <div class="entry-content"><p>最近准备将<a href="https://github.com/Terry-Mao/gopush-cluster/blob/master/rpc/rand_lb.go#L232">gopush代码中</a>rpc模块提出来复用一下，看到这样段代码，很是不解：</p>
 
-<pre><code>        tmpClients := make(map[string]*WeightRpc, len(r.Clients))
-        for addr, client := range r.Clients {
-            if client == nil {
-                continue
-            }
-            tmpClients[addr] = client
-            if client.Addr == retryAddr {
-                client.Client = rpcTmp
-            }
-        }
-        // atomic update clients
-        r.Clients = tmpClients
+<pre><code>tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+for addr, client := range r.Clients {
+    if client == nil {
+        continue
+    }
+    tmpClients[addr] = client
+    if client.Addr == retryAddr {
+        client.Client = rpcTmp
+    }
+}
+// atomic update clients
+r.Clients = tmpClients
 </code></pre>
 
 <p> </div>
