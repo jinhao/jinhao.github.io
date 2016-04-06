@@ -111,7 +111,7 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/31/race-free-li-jie/">Race Free 理解</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/03/31/race-free-li-jie/">Data Race Free 学习</a></h1>
     
     
       <p class="meta">
@@ -127,12 +127,28 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
   </header>
 
 
-  <div class="entry-content"><h2>参考</h2>
+  <div class="entry-content"><p>最近准备将<a href="https://github.com/Terry-Mao/gopush-cluster/blob/master/rpc/rand_lb.go#L232">gopush代码中</a>rpc模块提出来复用一下，看到这样段代码，很是不解：</p>
 
-<p><a href="http://preshing.com/20130618/atomic-vs-non-atomic-operations/">http://preshing.com/20130618/atomic-vs-non-atomic-operations/</a>
-<a href="https://software.intel.com/en-us/blogs/2013/01/06/benign-data-races-what-could-possibly-go-wrong">https://software.intel.com/en-us/blogs/2013/01/06/benign-data-races-what-could-possibly-go-wrong</a></p>
-</div>
+<pre><code>        tmpClients := make(map[string]*WeightRpc, len(r.Clients))
+        for addr, client := range r.Clients {
+            if client == nil {
+                continue
+            }
+            tmpClients[addr] = client
+            if client.Addr == retryAddr {
+                client.Client = rpcTmp
+            }
+        }
+        // atomic update clients
+        r.Clients = tmpClients
+</code></pre>
+
+<p> </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/03/31/race-free-li-jie/">继续阅读 &rarr;</a>
+    </footer>
   
 
 
@@ -388,7 +404,7 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
       </li>
     
       <li class="post">
-        <a href="/blog/2016/03/31/race-free-li-jie/">Race Free 理解</a>
+        <a href="/blog/2016/03/31/race-free-li-jie/">Data Race Free 学习</a>
       </li>
     
       <li class="post">
@@ -418,6 +434,7 @@ https://golang.org/pkg/sync/atomic/#example_Value_readMostly
 <li class='category'><a href='/blog/categories/stl/'>stl (1)</a></li>
 <li class='category'><a href='/blog/categories/tcp/'>tcp (3)</a></li>
 <li class='category'><a href='/blog/categories/zookeeper/'>zookeeper (1)</a></li>
+<li class='category'><a href='/blog/categories/底层/'>底层 (1)</a></li>
 
  </ul>
 </section>
