@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2016-04-06T09:22:47+08:00</updated>
+  <updated>2016-04-11T10:24:37+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -38,13 +38,11 @@ r.Clients = tmpClients
 
 <p>代码中需要更新<code>map[string]*WeightRpc</code>这个Clients<em>(该Clients只被这一个goroutine修改，其他多个goroutine回去读)</em>，作者先copy一个临时的map，进行修改后，直接赋值给原map，并注释上这样是原子更新。</p>
 
-<p>以我的理解，这种赋值操作肯定不是原子的，这个赋值操作编译成汇编，生成多个汇编指令，每个汇编指令都可能被中断，因此读该map的goroutine就有可能读到这个赋值的中间状态。于是我就在提了个<a href="https://github.com/Terry-Mao/gopush-cluster/issues/44">issue</a>，期望得到作者的解答(目测该项目已经不维护了)。</p>
-
-<h4>求助万能的google：</h4>
-
-<p>找到了<a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html">《谈谈go语言编程的并发安全》</a>,文中作者说的是golang中string赋值（单写多读），weedfs作者认为这种情况最多读到过期数据，不影响，最终的结论是：这种清晰可能引起各种不可预期的结果。</p>
+<p>如果不解，可以看看作者的说明：<a href="https://github.com/Terry-Mao/gopush-cluster/issues/44">issue</a>。</p>
 
 <h3>关于data race详细介绍，请看下面几篇文章</h3>
+
+<p><a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html">《谈谈go语言编程的并发安全》</a></p>
 
 <p><a href="http://preshing.com/20130618/atomic-vs-non-atomic-operations/">Atomic vs. Non-Atomic Operations</a></p>
 
@@ -398,7 +396,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#103;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#104;&#117;&#98;&#46;&#99;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 
