@@ -9,8 +9,8 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="术语介绍 安装步骤 安装步骤参考官方文档http://docs.openvswitch.org/en/latest/intro/install/dpdk/ 问题记录 1、dpdk编译找不到内核文件 uname -a查看自己内核版本号，
-下载对应内核版本文件(yum &hellip;">
+  <meta name="description" content="安装步骤 安装步骤参考官方文档http://docs.openvswitch.org/en/latest/intro/install/dpdk/ 问题记录 1、dpdk编译找不到内核文件 uname -a查看自己内核版本号，
+下载对应内核版本文件(yum install能够安装指定版本内核也可以 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -94,9 +94,7 @@
   </header>
 
 
-  <div class="entry-content"><h2>术语介绍</h2>
-
-<h2>安装步骤</h2>
+  <div class="entry-content"><h2>安装步骤</h2>
 
 <p>安装步骤参考官方文档<a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a></p>
 
@@ -110,13 +108,18 @@
 
 <h4>2、ovs与dpdk版本问题</h4>
 
-<p>注意选择ovs与dpdk版本，我这边刚开始选择的是ovs最新稳定版2.7.2,DPDK最新稳定版本17.05.1，结果编译ovs时候出错，找不到头文件rte_virtio_net.h,最后发现是17.05.1更新说明中:&lsquo;&rsquo;&lsquo;The vhost public header file rte_virtio_net.h is renamed to rte_vhost.h&rsquo;&lsquo;&rsquo;,于是将DPDK替换为16.11.2版本编译通过。
+<p>注意选择ovs与dpdk版本对应，我这边刚开始选择的是ovs最新稳定版2.7.2,DPDK最新稳定版本17.05.1，结果编译ovs时候出错，找不到头文件rte_virtio_net.h,最后发现是17.05.1更新说明中:&lsquo;&rsquo;&lsquo;The vhost public header file rte_virtio_net.h is renamed to rte_vhost.h&rsquo;&lsquo;&rsquo;,于是将DPDK替换为16.11.2版本编译通过。
 ovs与内核、DPDK版本对应关系可以参考<a href="http://docs.openvswitch.org/en/latest/faq/releases/">http://docs.openvswitch.org/en/latest/faq/releases/</a></p>
 
 <h4>3、VT-d（intel IO虚拟化）在BIOS是否开启确认</h4>
 
-<p>只能判断cpu是否支持VT-d,一般默认都是开启的   <br/>
-    <code>egrep -o "vmx" /proc/cpuinfo</code></p>
+<p>只能判断cpu是否支持VT-d,一般默认都是开启的</p>
+
+<pre><code>egrep -o "vmx" /proc/cpuinfo     
+dmesg | grep -e DMAR -e IOMMU     // 判断是否开启
+</code></pre>
+
+<p>若未开启的话，比较麻烦，可以参考网上一些文档尝试进行开启。</p>
 
 <h4>4、kernel中开启VT-d</h4>
 
@@ -146,6 +149,93 @@ ovs与内核、DPDK版本对应关系可以参考<a href="http://docs.openvswitc
 <pre><code># grub2-mkconfig &gt; /boot/grub2/grub.cfg
 # reboot
 </code></pre>
+
+<h4>5、网卡PCI号</h4>
+
+<p>当dpdk和ovs都安装完成后，进行验证将dpdk驱动的网卡绑定到ovs port上时，会进行如下操作</p>
+
+<pre><code># ovs-vsctl add-port br0 myportnameone -- set Interface myportnameone \
+type=dpdk options:dpdk-devargs=0000:06:00.0
+</code></pre>
+
+<p>对于dpdk-devargs这个参数指的是网卡设备的PCI号，这里指的是绑定到DPDK上网卡的PCI号，可以通过dpdk tools目录下dpdk-devbind.py工具查看：</p>
+
+<pre><code>[root@compute1 tools]# ./dpdk-devbind.py -s
+
+Network devices using DPDK-compatible driver
+============================================
+0000:01:00.1 'NetXtreme BCM5720 Gigabit Ethernet PCIe' drv=vfio-pci unused=tg3,igb_uio
+0000:02:00.0 'NetXtreme BCM5720 Gigabit Ethernet PCIe' drv=vfio-pci unused=tg3,igb_uio
+
+Network devices using kernel driver
+===================================
+0000:01:00.0 'NetXtreme BCM5720 Gigabit Ethernet PCIe' if=em1 drv=tg3 unused=igb_uio,vfio-pci *Active*
+0000:02:00.1 'NetXtreme BCM5720 Gigabit Ethernet PCIe' if=em4 drv=tg3 unused=igb_uio,vfio-pci
+
+Other network devices
+=====================
+&lt;none&gt;
+
+Crypto devices using DPDK-compatible driver
+===========================================
+&lt;none&gt;
+
+Crypto devices using kernel driver
+==================================
+&lt;none&gt;
+
+Other crypto devices
+====================
+&lt;none&gt; 
+</code></pre>
+
+<p>如上所示,0000:01:00.0和0000:02:00.0即为我们绑定到dpdk上的两张网卡的PCI号，且使用的驱动为drv=vfio-pci。</p>
+
+<h4>6、绑定网卡到ovs port报错</h4>
+
+<p>报错日志信息如下：</p>
+
+<blockquote><p>2017-08-24T03:29:45.325Z|00070|netdev_dpdk|WARN|Error attaching device &lsquo;0000:01:00.1&rsquo; to DPDK
+2017-08-24T03:29:45.325Z|00071|netdev|WARN|dpdk-p0: could not set configuration (Invalid argument)</p></blockquote>
+
+<p>错误信息非常简单，各种重试只会错误依旧，最后再一些高手的指点下，确定编译dpdk时，默认网卡的PMD driver（由于我的网卡是Broadcom的，默认未开启）。</p>
+
+<h5>6.1、网卡PMD驱动未开启</h5>
+
+<p><strong>查看网卡型号</strong></p>
+
+<pre><code>[root@compute1 dpdk-stable-16.11.2]# lspci -vvv | grep Eth
+01:00.0 Ethernet controller: Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+        Product Name: Broadcom NetXtreme Gigabit Ethernet
+01:00.1 Ethernet controller: Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+        Product Name: Broadcom NetXtreme Gigabit Ethernet
+02:00.0 Ethernet controller: Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+        Product Name: Broadcom NetXtreme Gigabit Ethernet
+02:00.1 Ethernet controller: Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+        Product Name: Broadcom NetXtreme Gigabit Ethernet
+</code></pre>
+
+<p><strong>开启dpdk中该类型网卡PMD驱动</strong></p>
+
+<pre><code>编辑vim config/common_base文件,找到Broadcom PMD驱动位置，如下：
+修改CONFIG_RTE_LIBRTE_BNX2X_PMD=y（默认未n）。
+# Compile burst-oriented Broadcom PMD driver
+#
+CONFIG_RTE_LIBRTE_BNX2X_PMD=y
+CONFIG_RTE_LIBRTE_BNX2X_DEBUG=n
+CONFIG_RTE_LIBRTE_BNX2X_DEBUG_INIT=n
+CONFIG_RTE_LIBRTE_BNX2X_DEBUG_RX=n
+CONFIG_RTE_LIBRTE_BNX2X_DEBUG_TX=n
+CONFIG_RTE_LIBRTE_BNX2X_MF_SUPPORT=n
+CONFIG_RTE_LIBRTE_BNX2X_DEBUG_PERIODIC=n
+</code></pre>
+
+<p>重新编译，测试后，错误依旧。</p>
+
+<h5>6.2、dpdk驱动对网卡类型的支持</h5>
+
+<p>各种重新编译测试后，仍然报错，于是重新阅读官网文档，总觉的是哪里漏设置了，于是乎看到dpdk支持的网卡<a href="http://dpdk.org/doc/nics">http://dpdk.org/doc/nics</a>,接着看到对<a href="http://dpdk.org/doc/guides/nics/bnxt.html">Broadcom网卡的支持</a>如下图，没有看到我使用的BCM5720,至此，问题原因已经清晰，等后面换了intel 82599或x710网卡再进行测试。
+<img src="/images/2017/08/dpdk-broadcom-nic-support.png" alt=" dpdk broadcom nic support png " /></p>
 </div>
   
   
@@ -513,6 +603,7 @@ r.Clients = tmpClients
 <li class='category'><a href='/blog/categories/stl/'>stl (1)</a></li>
 <li class='category'><a href='/blog/categories/tcp/'>tcp (3)</a></li>
 <li class='category'><a href='/blog/categories/zookeeper/'>zookeeper (1)</a></li>
+<li class='category'><a href='/blog/categories/云计算/'>云计算 (1)</a></li>
 <li class='category'><a href='/blog/categories/底层/'>底层 (1)</a></li>
 
  </ul>
