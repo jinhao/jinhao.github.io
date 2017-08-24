@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 云计算 | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/yun-ji-suan/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-08-24T17:04:37+08:00</updated>
+  <updated>2017-08-24T17:06:43+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -29,6 +29,9 @@
 <p>uname -a查看自己内核版本号，
 下载对应内核版本文件(yum install能够安装指定版本内核也可以)
     rpm -ivh kernel-devel-3.10.0-327.el7.x86_64.rpm  // 我的内核版本未3.10.0-327</p>
+
+<!-- more -->
+
 
 <h4>2、ovs与dpdk版本问题</h4>
 
