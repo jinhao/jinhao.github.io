@@ -9,8 +9,8 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="最近准备将gopush代码中rpc模块提出来复用一下，看到这样段代码，很是不解： tmpClients := make(map[string]*WeightRpc, len(r.Clients))
-for addr, client := range r.Clients { if client &hellip;">
+  <meta name="description" content="术语介绍 安装步骤 安装步骤参考官方文档http://docs.openvswitch.org/en/latest/intro/install/dpdk/ 问题记录 1、dpdk编译找不到内核文件 uname -a查看自己内核版本号，
+下载对应内核版本文件(yum &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,86 @@ for addr, client := range r.Clients { if client &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-08-21T17:49:03+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>5:49 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>术语介绍</h2>
+
+<h2>安装步骤</h2>
+
+<p>安装步骤参考官方文档<a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a></p>
+
+<h2>问题记录</h2>
+
+<h4>1、dpdk编译找不到内核文件</h4>
+
+<p>uname -a查看自己内核版本号，
+下载对应内核版本文件(yum install能够安装指定版本内核也可以)
+    rpm -ivh kernel-devel-3.10.0-327.el7.x86_64.rpm  // 我的内核版本未3.10.0-327</p>
+
+<h4>2、ovs与dpdk版本问题</h4>
+
+<p>注意选择ovs与dpdk版本，我这边刚开始选择的是ovs最新稳定版2.7.2,DPDK最新稳定版本17.05.1，结果编译ovs时候出错，找不到头文件rte_virtio_net.h,最后发现是17.05.1更新说明中:&lsquo;&rsquo;&lsquo;The vhost public header file rte_virtio_net.h is renamed to rte_vhost.h&rsquo;&lsquo;&rsquo;,于是将DPDK替换为16.11.2版本编译通过。
+ovs与内核、DPDK版本对应关系可以参考<a href="http://docs.openvswitch.org/en/latest/faq/releases/">http://docs.openvswitch.org/en/latest/faq/releases/</a></p>
+
+<h4>3、VT-d（intel IO虚拟化）在BIOS是否开启确认</h4>
+
+<p>只能判断cpu是否支持VT-d,一般默认都是开启的   <br/>
+    <code>egrep -o "vmx" /proc/cpuinfo</code></p>
+
+<h4>4、kernel中开启VT-d</h4>
+
+<p>判断是否开启</p>
+
+<pre><code>    # cat /proc/cmdline | grep iommu=pt
+    # cat /proc/cmdline | grep intel_iommu=on
+</code></pre>
+
+<p>未开启，则开启：</p>
+
+<pre><code># vim /etc/default/grub
+</code></pre>
+
+<p>修改</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet"
+</code></pre>
+
+<p>为</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet iommu=pt intel_iommu=on"
+</code></pre>
+
+<p>更新grub</p>
+
+<pre><code># grub2-mkconfig &gt; /boot/grub2/grub.cfg
+# reboot
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -399,6 +479,10 @@ r.Clients = tmpClients
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/05/race-free-li-jie/">Data Race学习</a>
       </li>
     
@@ -412,10 +496,6 @@ r.Clients = tmpClients
     
       <li class="post">
         <a href="/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/">TCP重传相关几个参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/">tcp_max_orphans引起的FIN,RST</a>
       </li>
     
   </ul>
@@ -464,7 +544,7 @@ r.Clients = tmpClients
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2016 - i4box -
+  Copyright &copy; 2017 - i4box -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253514540'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253514540%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </p>

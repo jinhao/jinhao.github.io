@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2016-04-11T10:24:37+08:00</updated>
+  <updated>2017-08-24T16:21:41+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dpdk + Ovs安装详解]]></title>
+    <link href="http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/"/>
+    <updated>2017-08-21T17:49:03+08:00</updated>
+    <id>http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie</id>
+    <content type="html"><![CDATA[<h2>术语介绍</h2>
+
+<h2>安装步骤</h2>
+
+<p>安装步骤参考官方文档<a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a></p>
+
+<h2>问题记录</h2>
+
+<h4>1、dpdk编译找不到内核文件</h4>
+
+<p>uname -a查看自己内核版本号，
+下载对应内核版本文件(yum install能够安装指定版本内核也可以)
+    rpm -ivh kernel-devel-3.10.0-327.el7.x86_64.rpm  // 我的内核版本未3.10.0-327</p>
+
+<h4>2、ovs与dpdk版本问题</h4>
+
+<p>注意选择ovs与dpdk版本，我这边刚开始选择的是ovs最新稳定版2.7.2,DPDK最新稳定版本17.05.1，结果编译ovs时候出错，找不到头文件rte_virtio_net.h,最后发现是17.05.1更新说明中:&lsquo;&rsquo;&lsquo;The vhost public header file rte_virtio_net.h is renamed to rte_vhost.h&rsquo;&lsquo;&rsquo;,于是将DPDK替换为16.11.2版本编译通过。
+ovs与内核、DPDK版本对应关系可以参考<a href="http://docs.openvswitch.org/en/latest/faq/releases/">http://docs.openvswitch.org/en/latest/faq/releases/</a></p>
+
+<h4>3、VT-d（intel IO虚拟化）在BIOS是否开启确认</h4>
+
+<p>只能判断cpu是否支持VT-d,一般默认都是开启的   <br/>
+    <code>egrep -o "vmx" /proc/cpuinfo</code></p>
+
+<h4>4、kernel中开启VT-d</h4>
+
+<p>判断是否开启</p>
+
+<pre><code>    # cat /proc/cmdline | grep iommu=pt
+    # cat /proc/cmdline | grep intel_iommu=on
+</code></pre>
+
+<p>未开启，则开启：</p>
+
+<pre><code># vim /etc/default/grub
+</code></pre>
+
+<p>修改</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet"
+</code></pre>
+
+<p>为</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet iommu=pt intel_iommu=on"
+</code></pre>
+
+<p>更新grub</p>
+
+<pre><code># grub2-mkconfig &gt; /boot/grub2/grub.cfg
+# reboot
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Data Race学习]]></title>
@@ -396,7 +456,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x67;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x67;&#105;&#x74;&#x40;&#x67;&#105;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#105;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 

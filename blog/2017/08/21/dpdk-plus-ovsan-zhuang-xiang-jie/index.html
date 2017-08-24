@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Octopress - i4box&#8217;s Blog</title>
+  <title>Dpdk + Ovs安装详解 - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="Category: octopress">
+  <meta name="description" content="术语介绍 安装步骤 安装步骤参考官方文档http://docs.openvswitch.org/en/latest/intro/install/dpdk/ 问题记录 1、dpdk编译找不到内核文件 uname -a查看自己内核版本号，
+下载对应内核版本文件(yum &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/categories/octopress">
+  <link rel="canonical" href="http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -70,35 +71,137 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Octopress</h1>
+    
+      <h1 class="entry-title">Dpdk + Ovs安装详解</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-08-21T17:49:03+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>5:49 pm</span></time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h2>术语介绍</h2>
 
-  
-  <h2>2014</h2>
+<h2>安装步骤</h2>
 
-<article>
-  
-<h1><a href="/blog/2014/10/31/number-githubshang-da-jian-blogzi-liao-zheng-li/">Github上搭建blog资料整理</a></h1>
-<time datetime="2014-10-31T13:48:59+08:00" pubdate><span class='month'>Oct</span> <span class='day'>31</span> <span class='year'>2014</span></time>
+<p>安装步骤参考官方文档<a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a></p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/octopress/'>octopress</a></span>
-</footer>
+<h2>问题记录</h2>
 
+<h4>1、dpdk编译找不到内核文件</h4>
 
-</article>
+<p>uname -a查看自己内核版本号，
+下载对应内核版本文件(yum install能够安装指定版本内核也可以)
+    rpm -ivh kernel-devel-3.10.0-327.el7.x86_64.rpm  // 我的内核版本未3.10.0-327</p>
 
+<h4>2、ovs与dpdk版本问题</h4>
+
+<p>注意选择ovs与dpdk版本，我这边刚开始选择的是ovs最新稳定版2.7.2,DPDK最新稳定版本17.05.1，结果编译ovs时候出错，找不到头文件rte_virtio_net.h,最后发现是17.05.1更新说明中:&lsquo;&rsquo;&lsquo;The vhost public header file rte_virtio_net.h is renamed to rte_vhost.h&rsquo;&lsquo;&rsquo;,于是将DPDK替换为16.11.2版本编译通过。
+ovs与内核、DPDK版本对应关系可以参考<a href="http://docs.openvswitch.org/en/latest/faq/releases/">http://docs.openvswitch.org/en/latest/faq/releases/</a></p>
+
+<h4>3、VT-d（intel IO虚拟化）在BIOS是否开启确认</h4>
+
+<p>只能判断cpu是否支持VT-d,一般默认都是开启的   <br/>
+    <code>egrep -o "vmx" /proc/cpuinfo</code></p>
+
+<h4>4、kernel中开启VT-d</h4>
+
+<p>判断是否开启</p>
+
+<pre><code>    # cat /proc/cmdline | grep iommu=pt
+    # cat /proc/cmdline | grep intel_iommu=on
+</code></pre>
+
+<p>未开启，则开启：</p>
+
+<pre><code># vim /etc/default/grub
+</code></pre>
+
+<p>修改</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet"
+</code></pre>
+
+<p>为</p>
+
+<pre><code># GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet iommu=pt intel_iommu=on"
+</code></pre>
+
+<p>更新grub</p>
+
+<pre><code># grub2-mkconfig &gt; /boot/grub2/grub.cfg
+# reboot
+</code></pre>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">i4box</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-08-21T17:49:03+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>5:49 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_xqw"></a>
+	<a class="jiathis_button_evernote"></a>
+	<a class="jiathis_button_douban"></a>
+	<a class="jiathis_button_googleplus"></a>
+	<a href="http://www.jiathis.com/share?uid=1980454" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1407190313492939" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1980454"></script>
+<!-- UY END -->
+
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/04/05/race-free-li-jie/" title="Previous Post: data race学习">&laquo; data race学习</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
