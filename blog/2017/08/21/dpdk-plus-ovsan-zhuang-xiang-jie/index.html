@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Dpdk + Ovs安装详解 - i4box&#8217;s Blog</title>
+  <title>Dpdk + Ovs安装详解与问题记录（上) - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
@@ -75,7 +75,7 @@
   
   <header>
     
-      <h1 class="entry-title">Dpdk + Ovs安装详解</h1>
+      <h1 class="entry-title">Dpdk + Ovs安装详解与问题记录（上)</h1>
     
     
       <p class="meta">
@@ -236,6 +236,8 @@ CONFIG_RTE_LIBRTE_BNX2X_DEBUG_PERIODIC=n
 
 <p>各种重新编译测试后，仍然报错，于是重新阅读官网文档，总觉的是哪里漏设置了，于是乎看到dpdk支持的网卡<a href="http://dpdk.org/doc/nics">http://dpdk.org/doc/nics</a>,接着看到对<a href="http://dpdk.org/doc/guides/nics/bnxt.html">Broadcom网卡的支持</a>如下图，没有看到我使用的BCM5720,至此，问题原因已经清晰，等后面换了intel 82599或x710网卡再进行测试。
 <img src="/images/2017/08/dpdk-broadcom-nic-support.png" alt=" dpdk broadcom nic support png " /></p>
+
+<p>后面等支持dpdk的intel网卡机器到位后，再进行测试记录。</p>
 </div>
 
 
@@ -312,7 +314,7 @@ var jiathis_config = {data_track_clickback:'true'};
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解</a>
+        <a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解与问题记录（上)</a>
       </li>
     
       <li class="post">

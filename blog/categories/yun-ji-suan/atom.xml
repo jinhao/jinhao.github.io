@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 云计算 | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/yun-ji-suan/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-08-24T17:06:43+08:00</updated>
+  <updated>2017-09-01T16:23:53+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Dpdk + Ovs安装详解]]></title>
+    <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（上)]]></title>
     <link href="http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/"/>
     <updated>2017-08-21T17:49:03+08:00</updated>
     <id>http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie</id>
@@ -163,6 +163,8 @@ CONFIG_RTE_LIBRTE_BNX2X_DEBUG_PERIODIC=n
 
 <p>各种重新编译测试后，仍然报错，于是重新阅读官网文档，总觉的是哪里漏设置了，于是乎看到dpdk支持的网卡<a href="http://dpdk.org/doc/nics">http://dpdk.org/doc/nics</a>,接着看到对<a href="http://dpdk.org/doc/guides/nics/bnxt.html">Broadcom网卡的支持</a>如下图，没有看到我使用的BCM5720,至此，问题原因已经清晰，等后面换了intel 82599或x710网卡再进行测试。
 <img src="/images/2017/08/dpdk-broadcom-nic-support.png" alt=" dpdk broadcom nic support png " /></p>
+
+<p>后面等支持dpdk的intel网卡机器到位后，再进行测试记录。</p>
 ]]></content>
   </entry>
   

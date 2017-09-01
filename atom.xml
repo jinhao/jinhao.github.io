@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-08-24T17:06:43+08:00</updated>
+  <updated>2017-09-01T16:23:53+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Dpdk + Ovs安装详解]]></title>
+    <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（上)]]></title>
     <link href="http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/"/>
     <updated>2017-08-21T17:49:03+08:00</updated>
     <id>http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie</id>
@@ -163,6 +163,8 @@ CONFIG_RTE_LIBRTE_BNX2X_DEBUG_PERIODIC=n
 
 <p>各种重新编译测试后，仍然报错，于是重新阅读官网文档，总觉的是哪里漏设置了，于是乎看到dpdk支持的网卡<a href="http://dpdk.org/doc/nics">http://dpdk.org/doc/nics</a>,接着看到对<a href="http://dpdk.org/doc/guides/nics/bnxt.html">Broadcom网卡的支持</a>如下图，没有看到我使用的BCM5720,至此，问题原因已经清晰，等后面换了intel 82599或x710网卡再进行测试。
 <img src="http://i4box.com/images/2017/08/dpdk-broadcom-nic-support.png" alt=" dpdk broadcom nic support png " /></p>
+
+<p>后面等支持dpdk的intel网卡机器到位后，再进行测试记录。</p>
 ]]></content>
   </entry>
   
@@ -549,7 +551,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#103;&#105;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#x6d;">&#103;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x67;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 
