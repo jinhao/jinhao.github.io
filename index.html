@@ -9,8 +9,7 @@
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="安装步骤 安装步骤参考官方文档http://docs.openvswitch.org/en/latest/intro/install/dpdk/ 问题记录 1、dpdk编译找不到内核文件 uname -a查看自己内核版本号，
-下载对应内核版本文件(yum install能够安装指定版本内核也可以 &hellip;">
+  <meta name="description" content="接上一篇，由于DPDK不支持BCM5720的网卡，导致到时ovs add dpdk网卡时失败，在新机器到位后，重新进行编程，测试。编程ovs+dpdk的基本步骤与之前一样，不再重复。先看下新机器的网卡： ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,7 +77,41 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解与问题记录（上)</a></h1>
+      <h1 class="entry-title"><a href="/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)/">Dpdk + Ovs安装详解与问题记录（下）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-09-04T14:27:40+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:27 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>接上一篇，由于DPDK不支持BCM5720的网卡，导致到时ovs add dpdk网卡时失败，在新机器到位后，重新进行编程，测试。编程ovs+dpdk的基本步骤与之前一样，不再重复。先看下新机器的网卡：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解与问题记录（上）</a></h1>
     
     
       <p class="meta">
@@ -443,7 +476,11 @@ r.Clients = tmpClients
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解与问题记录（上)</a>
+        <a href="/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)/">Dpdk + Ovs安装详解与问题记录（下）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/">Dpdk + Ovs安装详解与问题记录（上）</a>
       </li>
     
       <li class="post">
@@ -456,10 +493,6 @@ r.Clients = tmpClients
     
       <li class="post">
         <a href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/">Golang Map 学习</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu/">TCP重传相关几个参数</a>
       </li>
     
   </ul>
@@ -477,7 +510,7 @@ r.Clients = tmpClients
 <li class='category'><a href='/blog/categories/stl/'>stl (1)</a></li>
 <li class='category'><a href='/blog/categories/tcp/'>tcp (3)</a></li>
 <li class='category'><a href='/blog/categories/zookeeper/'>zookeeper (1)</a></li>
-<li class='category'><a href='/blog/categories/云计算/'>云计算 (1)</a></li>
+<li class='category'><a href='/blog/categories/云计算/'>云计算 (2)</a></li>
 <li class='category'><a href='/blog/categories/底层/'>底层 (1)</a></li>
 
  </ul>

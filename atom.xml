@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-09-01T16:23:53+08:00</updated>
+  <updated>2017-09-04T15:06:18+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -14,7 +14,47 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（上)]]></title>
+    <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（下）]]></title>
+    <link href="http://i4box.com/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)/"/>
+    <updated>2017-09-04T14:27:40+08:00</updated>
+    <id>http://i4box.com/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)</id>
+    <content type="html"><![CDATA[<p>接上一篇，由于DPDK不支持BCM5720的网卡，导致到时ovs add dpdk网卡时失败，在新机器到位后，重新进行编程，测试。编程ovs+dpdk的基本步骤与之前一样，不再重复。先看下新机器的网卡：</p>
+
+<!-- more -->
+
+
+<p><img src="http://i4box.com/images/2017/09/lspci_vvv.png" alt="lspci Eth show" />
+这台测试机使用的是Intel 82599网卡，从dpdk驱动支持列表中，可以看到时支持该网卡的，且dpdk编译配置中，默认开启该网卡的PMD选项，直接编译即可。</p>
+
+<h2>ovs初始化</h2>
+
+<p>编译完dpdk和ovs后，我们进行ovs启动初始化，初始化时，我们可以看到EAL（Environment Abstraction Layer ）相关的启动日志。
+<img src="http://i4box.com/images/2017/09/ovsdb-start.png" alt="ovs start with dpdk" /></p>
+
+<h2>ovs add-port</h2>
+
+<pre><code># ovs-vsctl add-port br0 dpdk-p0 -- set Interface dpdk-p0 type=dpdk options:dpdk-devargs=0000:03:00.0
+</code></pre>
+
+<p>add-port没有再报错。</p>
+
+<pre><code># ovs-vsctl show
+</code></pre>
+
+<p><img src="http://i4box.com/images/2017/09/port-bind.png" alt="vscth show" /></p>
+
+<p>绑定成功了，此时我们通过top查看CPU，可以发现其中一个CPU核占用100%，占用进程为ovs-vswitchd进程，通过top -H查看线程，具体进程中占用的线程为pmd线程。</p>
+
+<p><img src="http://i4box.com/images/2017/09/top1.png" alt="top1" /></p>
+
+<p><img src="http://i4box.com/images/2017/09/top2.png" alt="top2" /></p>
+
+<p>至此，dpdk + ovs就成功编译完成，后续我们再继续研究如何进行性能测试对比。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（上）]]></title>
     <link href="http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/"/>
     <updated>2017-08-21T17:49:03+08:00</updated>
     <id>http://i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie</id>
@@ -551,7 +591,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x67;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#103;&#x69;&#116;&#x40;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#99;&#x6f;&#109;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 

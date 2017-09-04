@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stl Set_defference 和 Inserter使用 - i4box&#8217;s Blog</title>
+  <title>Dpdk + Ovs安装详解与问题记录（下） - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="今天在弄通过zookeeper动态更新服务列表new_list，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表old_list。 方法1 将new_list中每个member在old_list中遍历一遍， &hellip;">
-  <meta name="keywords" content="set_difference inserter 交集">
+  <meta name="description" content="接上一篇，由于DPDK不支持BCM5720的网卡，导致到时ovs add dpdk网卡时失败，在新机器到位后，重新进行编程，测试。编程ovs+dpdk的基本步骤与之前一样，不再重复。先看下新机器的网卡： 这台测试机使用的是Intel 82599网卡，从dpdk驱动支持列表中，可以看到时支持该网卡的 &hellip;">
+  <meta name="keywords" content="dpdk ovs 网络">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/2014/11/27/stl-set-defference-he-insertershi-yong">
+  <link rel="canonical" href="http://i4box.com/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -74,7 +74,7 @@
   
   <header>
     
-      <h1 class="entry-title">Stl Set_defference 和 Inserter使用</h1>
+      <h1 class="entry-title">Dpdk + Ovs安装详解与问题记录（下）</h1>
     
     
       <p class="meta">
@@ -83,80 +83,45 @@
 
 
 
-<time class='entry-date' datetime='2014-11-27T22:12:10+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:12 pm</span></time>
+<time class='entry-date' datetime='2017-09-04T14:27:40+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:27 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>今天在弄通过zookeeper动态更新服务列表<code>new_list</code>，由于我这边在做的时一个动态连接池管理，获取到得服务列表后是要与服务列表中得地址建立连接的，更新服务列表时自然也不能简单的直接覆盖老服务列表<code>old_list</code>。</p>
+<div class="entry-content"><p>接上一篇，由于DPDK不支持BCM5720的网卡，导致到时ovs add dpdk网卡时失败，在新机器到位后，重新进行编程，测试。编程ovs+dpdk的基本步骤与之前一样，不再重复。先看下新机器的网卡：</p>
 
 <!-- more -->
 
 
-<ul>
-<li><p>方法1</p>
+<p><img src="/images/2017/09/lspci_vvv.png" alt="lspci Eth show" />
+这台测试机使用的是Intel 82599网卡，从dpdk驱动支持列表中，可以看到时支持该网卡的，且dpdk编译配置中，默认开启该网卡的PMD选项，直接编译即可。</p>
 
-<blockquote><p>将<code>new_list</code>中每个member在<code>old_list</code>中遍历一遍，在<code>old_list</code>已经存在的member做上标记，不存在的member建立连接后加入<code>old_list</code>，全部遍历完成后，再遍历一遍<code>old_list</code>将未做标记的member移除。</p></blockquote></li>
-<li><p>方法2</p>
+<h2>ovs初始化</h2>
 
-<blockquote><p>直接使用stl中算法函数:<a href="http://www.cplusplus.com/reference/algorithm/set_difference/">std::set_difference</a>, 该算法函数可以将两个<a href="http://www.cplusplus.com/reference/set/set/">set</a>(也可以是其他的container)中前一个<a href="http://www.cplusplus.com/reference/set/set/">set</a>中包含，而后一个set中没有的member保存到另外一个<a href="http://www.cplusplus.com/reference/set/set/">set</a>中。这样我就可以很容易将<code>old_list</code>中已经不在<code>new_list</code>中得member筛选出来移除掉，另外将new_list中存在的而old_list中不存在的建立连接后加入。</p></blockquote></li>
-</ul>
+<p>编译完dpdk和ovs后，我们进行ovs启动初始化，初始化时，我们可以看到EAL（Environment Abstraction Layer ）相关的启动日志。
+<img src="/images/2017/09/ovsdb-start.png" alt="ovs start with dpdk" /></p>
 
+<h2>ovs add-port</h2>
 
-<p>使用方法如下：</p>
-
-<pre><code>#include &lt;stdio.h&gt;
-#include &lt;string&gt;
-#include &lt;set&gt;
-#include &lt;algorithm&gt;
-
-void print_set(const std::set&lt;std::string&gt;&amp; s)
-{
-    std::set&lt;std::string&gt;::const_iterator itor;
-    for (itor= s.begin(); itor != s.end(); ++itor)
-    {
-        printf("%s\n", (*itor).c_str());
-    }
-}
-
-int main(int argc, char* argv[])
-{
-    std::set&lt;std::string&gt; set1;
-    std::set&lt;std::string&gt; set2;
-
-    set1.insert("192.168.60.71:11201");
-    set1.insert("192.168.60.72:11101");
-    set1.insert("192.168.70.111:11222");
-    set1.insert("192.168.70.111:10222");
-    set1.insert("192.168.73.111:10222");
-    //printf("set1:\n");
-    //print_set(set1);
-
-    set2.insert("192.168.70.111:10222");
-    set2.insert("192.168.70.111:11222");
-    set2.insert("192.168.60.71:11201");
-    set2.insert("192.168.60.72:11101");
-    //printf("set2:\n");
-    //print_set(set2);
-
-    std::set&lt;std::string&gt; rlt;
-    std::set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(),
-    std::inserter(rlt, rlt.end()));
-
-    //printf("diff:\n");
-    print_set(rlt);
-
-    return 0;
-}
+<pre><code># ovs-vsctl add-port br0 dpdk-p0 -- set Interface dpdk-p0 type=dpdk options:dpdk-devargs=0000:03:00.0
 </code></pre>
 
-<p>结果如下：</p>
+<p>add-port没有再报错。</p>
 
-<blockquote><p>192.168.73.111:10222</p></blockquote>
+<pre><code># ovs-vsctl show
+</code></pre>
 
-<p>代码中std::<a href="http://www.cplusplus.com/reference/iterator/inserter/">inserter</a>是一个模板函数，生成一个插入迭代器<a href="http://www.cplusplus.com/reference/iterator/inserter/">insert_iterator</a>,详细介绍参考<a href="http://www.cplusplus.com">www.cplusplus.com</a>.</p>
+<p><img src="/images/2017/09/port-bind.png" alt="vscth show" /></p>
+
+<p>绑定成功了，此时我们通过top查看CPU，可以发现其中一个CPU核占用100%，占用进程为ovs-vswitchd进程，通过top -H查看线程，具体进程中占用的线程为pmd线程。</p>
+
+<p><img src="/images/2017/09/top1.png" alt="top1" /></p>
+
+<p><img src="/images/2017/09/top2.png" alt="top2" /></p>
+
+<p>至此，dpdk + ovs就成功编译完成，后续我们再继续研究如何进行性能测试对比。</p>
 </div>
 
 
@@ -172,12 +137,12 @@ int main(int argc, char* argv[])
 
 
 
-<time class='entry-date' datetime='2014-11-27T22:12:10+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:12 pm</span></time>
+<time class='entry-date' datetime='2017-09-04T14:27:40+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>2:27 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/stl/'>stl</a>, <a class='category' href='/blog/categories/zookeeper/'>zookeeper</a>
+    <a class='category' href='/blog/categories/yun-ji-suan/'>云计算</a>
   
 </span>
 
@@ -217,10 +182,8 @@ var jiathis_config = {data_track_clickback:'true'};
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/11/08/fin-wait1zhuang-tai-ce-shi/" title="Previous Post: fin_wait1状态测试">&laquo; fin_wait1状态测试</a>
+        <a class="basic-alignment left" href="/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/" title="Previous Post: dpdk + ovs安装详解与问题记录（上）">&laquo; dpdk + ovs安装详解与问题记录（上）</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/" title="Next Post: tcp_max_orphans引起的FIN,RST">tcp_max_orphans引起的FIN,RST &raquo;</a>
       
     </p>
   </footer>
