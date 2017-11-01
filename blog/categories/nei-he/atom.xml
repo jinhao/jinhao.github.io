@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 内核 | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/nei-he/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2017-11-01T23:58:31+08:00</updated>
+  <id>http://i4box.com/</id>
+  <author>
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Linux内核参数之rp_filer]]></title>
+    <link href="http://i4box.com/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer/"/>
+    <updated>2017-11-01T23:54:38+08:00</updated>
+    <id>http://i4box.com/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer</id>
+    <content type="html"><![CDATA[<h2>参考</h2>
+
+<p><a href="http://blog.clanzx.net/2013/08/22/rp_filter.html">http://blog.clanzx.net/2013/08/22/rp_filter.html</a>
+<a href="http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/">http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/</a>
+<a href="http://blog.csdn.net/hshl1214/article/details/53103739">http://blog.csdn.net/hshl1214/article/details/53103739</a></p>
+]]></content>
+  </entry>
+  
+</feed>

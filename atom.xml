@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-09-04T15:09:20+08:00</updated>
+  <updated>2017-11-01T23:58:31+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Linux内核参数之rp_filer]]></title>
+    <link href="http://i4box.com/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer/"/>
+    <updated>2017-11-01T23:54:38+08:00</updated>
+    <id>http://i4box.com/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer</id>
+    <content type="html"><![CDATA[<h2>参考</h2>
+
+<p><a href="http://blog.clanzx.net/2013/08/22/rp_filter.html">http://blog.clanzx.net/2013/08/22/rp_filter.html</a>
+<a href="http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/">http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/</a>
+<a href="http://blog.csdn.net/hshl1214/article/details/53103739">http://blog.csdn.net/hshl1214/article/details/53103739</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dpdk + Ovs安装详解与问题记录（下）]]></title>
@@ -591,7 +604,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x67;&#x69;&#116;&#64;&#103;&#x69;&#116;&#104;&#x75;&#98;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#46;&#x63;&#111;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#103;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 
