@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>TCP重传相关几个参数 - i4box&#8217;s Blog</title>
+  <title>Dpdk对接openstack - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。 先简单说下tcp重传相关的几个参数： 1. &hellip;">
-  <meta name="keywords" content="tcp_retries">
+  <meta name="description" content="安装 编译安装DPDK + OVS 参考 [DPDK安装详解与问题记录](http://www.i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/) 启动OVS ./configure &ndash;with-dpdk=$ &hellip;">
+  <meta name="keywords" content="dpdk openstack 性能 用户态">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/2015/03/05/tcpzhong-chuan-xiang-guan-ji-ge-can-shu">
+  <link rel="canonical" href="http://i4box.com/blog/2017/11/27/dpdkdui-jie-openstack">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -74,7 +74,7 @@
   
   <header>
     
-      <h1 class="entry-title">TCP重传相关几个参数</h1>
+      <h1 class="entry-title">Dpdk对接openstack</h1>
     
     
       <p class="meta">
@@ -83,36 +83,102 @@
 
 
 
-<time class='entry-date' datetime='2015-03-05T16:58:44+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:58 pm</span></time>
+<time class='entry-date' datetime='2017-11-27T17:00:22+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>5:00 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>看过TCP协议的，我们都知道TCP send一个数据包，如果对端没有给响应(ack), tcp会进行重传，但是重传指定次数后，若一直失败（如网络中断了），最终错误码是什么了？之前一直也没关心过，今天刚好做了测试，记录一下。</p>
+<div class="entry-content"><h2>安装</h2>
 
-<!-- more -->
+<h3>编译安装DPDK + OVS</h3>
 
-
-<p>先简单说下tcp重传相关的几个参数：</p>
-
-<pre><code>1. tcp_orphan_retries: 主要是针对孤立的socket(也就是已经从进程上下文中删除了，可是还有一些清理工作没有完成).对于这种socket，我们重试的最大的次数就是它。 
-2. tcp_retries1: 表示的是最大的重试次数，当超过了这个值，我们就需要检测路由表了。    
-3. tcp_retries2: 表示重试最大次数，只不过这个值一般要比上面的值大。和上面那个不同的是，当重试次数超过这个值，我们就必须放弃重试了。  
-4. tcp_syn_retries: 默认值一般为5，表示未收到syn/ack,syn分节的重传次数, 重传时间为1s,2s,4s,8s,16s。 
-5. tcp_synack_retries: 表示未收到ack，syn/ack重传次数，重传时间间隔也为1s,2s,4s,8s,16s。
+<pre><code>参考 [DPDK安装详解与问题记录](http://www.i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/)
 </code></pre>
 
-<p>测试方法：通过iptables过滤掉客户端的包。</p>
-
-<p>测试结果：</p>
+<h3>启动OVS</h3>
 
 <ol>
-<li>connect重试tcp_syn_retries指定次数后，若还无响应，则connect返回-1， errno:110 errstr:Connection timed out</li>
-<li>send发送数据直接返回成功copy到socket缓冲区的字节数，tcp协议栈在未收到对端ack时，重试发送，重试tcp_retries2指定次数后，不再重试，下一次再对该fd进行write操作，将返回ret=-1，errno:110, errstr:Connection timed out.</li>
+<li><p>./configure &ndash;with-dpdk=$DPDK_BUILD &ndash;prefix=/usr &ndash;localstatedir=/var &ndash;sysconfdir=/etc</p></li>
+<li><p>make &amp; make install</p></li>
+<li><p>export PATH=$PATH:/usr/share/openvswitch/scripts
+export DB_SOCK=/var/run/openvswitch/db.sock</p></li>
+<li><p>ovs-ctl &ndash;no-ovs-vswitchd start</p></li>
+<li><p>ovs-vsctl &ndash;no-wait set Open_vSwitch . other_config:dpdk-init=true
+ovs-ctl &ndash;no-ovsdb-server &ndash;db-sock=&ldquo;$DB_SOCK&rdquo; start
+到此，支持dpdk的ovs启动成功。</p></li>
 </ol>
 
+
+<h3>创建相关网桥</h3>
+
+<p>1、创建br-int网桥</p>
+
+<pre><code>ovs-vsctl --may-exist add-br br-int -- set Bridge br-int datapath_type=netdev -- br-set-external-id br-int bridge-id br-int -- set bridge br-int fail-mode=standalone
+</code></pre>
+
+<p>2、创建br-phy网桥</p>
+
+<pre><code>ovs-vsctl --may-exist add-br br-phy -- set Bridge br-phy datapath_type=netdev -- br-set-external-id br-phy bridge-id br-phy \
+            -- set bridge br-phy fail-mode=standalone other_config:hwaddr=&lt;mac address of eth1 interface&gt;
+</code></pre>
+
+<p>说明：这个网桥是ovs运行在用户态下，多添加的，使ovs用户态能够使用linux内核态协议栈进行路由和arp解析。（原文如下）
+<em>This additional bridge is required when running Open vSwitch in userspace rather than kernel-based Open vSwitch. The purpose of this bridge is to allow use of the kernel network stack for routing and ARP resolution. The datapath needs to look-up the routing table and ARP table to prepare the tunnel header and transmit data to the output port.</em></p>
+
+<p>3、将eth1添加到br-phy上</p>
+
+<p>这里eth1已结通过dpdk绑定igb_uio驱动</p>
+
+<pre><code># ovs-vsctl --timeout 10 add-port br-phy dpdk0 -- set Interface dpdk0 type=dpdk options:dpdk-devargs=0000:06:00.0
+# ip addr add 172.168.1.1/24 dev br-phy
+# ip link set br-phy up
+# iptables -F
+</code></pre>
+
+<h3>配置openvswitch_agent</h3>
+
+<p>ovs配置项下配置如下配置</p>
+
+<pre><code>[ovs]
+datapath_type=netdev
+vhostuser_socket_dir=/usr/local/var/run/openvswitch
+</code></pre>
+
+<h3>设置nova flavor大页</h3>
+
+<pre><code># sudo openstack flavor create --id 3 --ram 64 --vcpus 1 hugepage
+# sudo openstack flavor set --property  hw:mem_page_size=large hugepage
+</code></pre>
+
+<h3>创建虚机，观察</h3>
+
+<ol>
+<li>dashboard上创建虚机，选择hugepage flavor；</li>
+<li>创建成功后，ovs-vsctl show观察
+<img src="/images/2017/12/ovs-dpdk-show.png" alt="vhostuser nic in ovs" /></li>
+</ol>
+
+
+<h2>问题记录</h2>
+
+<p><strong>[1]</strong> libvirtError: internal error: process exited while connecting to monitor: 2017-11-20T12:18:04.693502Z qemu-kvm: -chardev socket,id=charnet0,path=/var/run/openvswitch/vhu360cc5c5-c9,server: Failed to bind socket to /var/run/openvswitch/vhu360cc5c5-c9: Permission denied</p>
+
+<p>原因：由于我的Openstack环境是docker部署的，ovs被我移到宿主机上部署，docker中的nova没有权限操作宿主机的/var/run/openvswitch目录创建unix socket文件,
+因此简单解决方法：chmod +777 /var/run/openvswitch</p>
+
+<p><strong>[2]</strong> 两台compute节点上的虚机不通</p>
+
+<p>排查方法: 检查配置在br-phy上的两个ip在宿主机上是否能够ping通。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a>
+<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a>
+<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a>
+<a href="http://syswift.com/183.html">http://syswift.com/183.html</a>
+<a href="http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/">http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/</a></p>
 </div>
 
 
@@ -128,12 +194,12 @@
 
 
 
-<time class='entry-date' datetime='2015-03-05T16:58:44+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:58 pm</span></time>
+<time class='entry-date' datetime='2017-11-27T17:00:22+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>5:00 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/tcp/'>tcp</a>
+    <a class='category' href='/blog/categories/dpdk/'>dpdk</a>, <a class='category' href='/blog/categories/openstack/'>openstack</a>
   
 </span>
 
@@ -173,10 +239,8 @@ var jiathis_config = {data_track_clickback:'true'};
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/15/tcp-max-orphansyin-qi-de-fin/" title="Previous Post: tcp_max_orphans引起的FIN,RST">&laquo; tcp_max_orphans引起的FIN,RST</a>
+        <a class="basic-alignment left" href="/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer/" title="Previous Post: Linux内核参数之rp_filer">&laquo; Linux内核参数之rp_filer</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/03/31/golang-map-zai-rangeqi-jian-deletecao-zuo-an-quan/" title="Next Post: golang map 学习">golang map 学习 &raquo;</a>
       
     </p>
   </footer>

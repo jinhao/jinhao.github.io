@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Openstack | i4box's Blog]]></title>
+  <link href="http://i4box.com/blog/categories/openstack/atom.xml" rel="self"/>
+  <link href="http://i4box.com/"/>
+  <updated>2017-12-01T15:39:52+08:00</updated>
+  <id>http://i4box.com/</id>
+  <author>
+    <name><![CDATA[i4box]]></name>
+    <email><![CDATA[jinhao2011@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Dpdk对接openstack]]></title>
+    <link href="http://i4box.com/blog/2017/11/27/dpdkdui-jie-openstack/"/>
+    <updated>2017-11-27T17:00:22+08:00</updated>
+    <id>http://i4box.com/blog/2017/11/27/dpdkdui-jie-openstack</id>
+    <content type="html"><![CDATA[<h2>安装</h2>
+
+<h3>编译安装DPDK + OVS</h3>
+
+<pre><code>参考 [DPDK安装详解与问题记录](http://www.i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/)
+</code></pre>
+
+<h3>启动OVS</h3>
+
+<ol>
+<li><p>./configure &ndash;with-dpdk=$DPDK_BUILD &ndash;prefix=/usr &ndash;localstatedir=/var &ndash;sysconfdir=/etc</p></li>
+<li><p>make &amp; make install</p></li>
+<li><p>export PATH=$PATH:/usr/share/openvswitch/scripts
+export DB_SOCK=/var/run/openvswitch/db.sock</p></li>
+<li><p>ovs-ctl &ndash;no-ovs-vswitchd start</p></li>
+<li><p>ovs-vsctl &ndash;no-wait set Open_vSwitch . other_config:dpdk-init=true
+ovs-ctl &ndash;no-ovsdb-server &ndash;db-sock=&ldquo;$DB_SOCK&rdquo; start
+到此，支持dpdk的ovs启动成功。</p></li>
+</ol>
+
+
+<h3>创建相关网桥</h3>
+
+<p>1、创建br-int网桥</p>
+
+<pre><code>ovs-vsctl --may-exist add-br br-int -- set Bridge br-int datapath_type=netdev -- br-set-external-id br-int bridge-id br-int -- set bridge br-int fail-mode=standalone
+</code></pre>
+
+<p>2、创建br-phy网桥</p>
+
+<pre><code>ovs-vsctl --may-exist add-br br-phy -- set Bridge br-phy datapath_type=netdev -- br-set-external-id br-phy bridge-id br-phy \
+            -- set bridge br-phy fail-mode=standalone other_config:hwaddr=&lt;mac address of eth1 interface&gt;
+</code></pre>
+
+<p>说明：这个网桥是ovs运行在用户态下，多添加的，使ovs用户态能够使用linux内核态协议栈进行路由和arp解析。（原文如下）
+<em>This additional bridge is required when running Open vSwitch in userspace rather than kernel-based Open vSwitch. The purpose of this bridge is to allow use of the kernel network stack for routing and ARP resolution. The datapath needs to look-up the routing table and ARP table to prepare the tunnel header and transmit data to the output port.</em></p>
+
+<p>3、将eth1添加到br-phy上</p>
+
+<p>这里eth1已结通过dpdk绑定igb_uio驱动</p>
+
+<pre><code># ovs-vsctl --timeout 10 add-port br-phy dpdk0 -- set Interface dpdk0 type=dpdk options:dpdk-devargs=0000:06:00.0
+# ip addr add 172.168.1.1/24 dev br-phy
+# ip link set br-phy up
+# iptables -F
+</code></pre>
+
+<h3>配置openvswitch_agent</h3>
+
+<p>ovs配置项下配置如下配置</p>
+
+<pre><code>[ovs]
+datapath_type=netdev
+vhostuser_socket_dir=/usr/local/var/run/openvswitch
+</code></pre>
+
+<h3>设置nova flavor大页</h3>
+
+<pre><code># sudo openstack flavor create --id 3 --ram 64 --vcpus 1 hugepage
+# sudo openstack flavor set --property  hw:mem_page_size=large hugepage
+</code></pre>
+
+<h3>创建虚机，观察</h3>
+
+<ol>
+<li>dashboard上创建虚机，选择hugepage flavor；</li>
+<li>创建成功后，ovs-vsctl show观察
+<img src="/images/2017/12/ovs-dpdk-show.png" alt="vhostuser nic in ovs" /></li>
+</ol>
+
+
+<h2>问题记录</h2>
+
+<p><strong>[1]</strong> libvirtError: internal error: process exited while connecting to monitor: 2017-11-20T12:18:04.693502Z qemu-kvm: -chardev socket,id=charnet0,path=/var/run/openvswitch/vhu360cc5c5-c9,server: Failed to bind socket to /var/run/openvswitch/vhu360cc5c5-c9: Permission denied</p>
+
+<p>原因：由于我的Openstack环境是docker部署的，ovs被我移到宿主机上部署，docker中的nova没有权限操作宿主机的/var/run/openvswitch目录创建unix socket文件,
+因此简单解决方法：chmod +777 /var/run/openvswitch</p>
+
+<p><strong>[2]</strong> 两台compute节点上的虚机不通</p>
+
+<p>排查方法: 检查配置在br-phy上的两个ip在宿主机上是否能够ping通。</p>
+
+<h2>参考</h2>
+
+<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a>
+<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a>
+<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a>
+<a href="http://syswift.com/183.html">http://syswift.com/183.html</a>
+<a href="http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/">http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/</a></p>
+]]></content>
+  </entry>
+  
+</feed>
