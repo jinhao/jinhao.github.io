@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Openstack | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/openstack/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-12-01T15:43:03+08:00</updated>
+  <updated>2017-12-01T15:45:09+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -104,10 +104,10 @@ vhostuser_socket_dir=/usr/local/var/run/openvswitch
 
 <h2>参考</h2>
 
-<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a>
-<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a>
-<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a>
-<a href="http://syswift.com/183.html">http://syswift.com/183.html</a>
+<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a> <br/>
+<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a><br/>
+<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a><br/>
+<a href="http://syswift.com/183.html">http://syswift.com/183.html</a><br/>
 <a href="http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/">http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/</a></p>
 ]]></content>
   </entry>

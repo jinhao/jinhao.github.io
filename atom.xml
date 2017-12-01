@@ -4,7 +4,7 @@
   <title><![CDATA[i4box's Blog]]></title>
   <link href="http://i4box.com/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-12-01T15:43:03+08:00</updated>
+  <updated>2017-12-01T15:45:09+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -104,10 +104,10 @@ vhostuser_socket_dir=/usr/local/var/run/openvswitch
 
 <h2>参考</h2>
 
-<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a>
-<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a>
-<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a>
-<a href="http://syswift.com/183.html">http://syswift.com/183.html</a>
+<p><a href="http://docs.openvswitch.org/en/latest/intro/install/dpdk/">http://docs.openvswitch.org/en/latest/intro/install/dpdk/</a> <br/>
+<a href="http://docs.openvswitch.org/en/latest/howto/dpdk/">http://docs.openvswitch.org/en/latest/howto/dpdk/</a><br/>
+<a href="http://docs.openvswitch.org/en/latest/intro/install/general/#general-building">http://docs.openvswitch.org/en/latest/intro/install/general/#general-building</a><br/>
+<a href="http://syswift.com/183.html">http://syswift.com/183.html</a><br/>
 <a href="http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/">http://docs.openvswitch.org/en/latest/howto/userspace-tunneling/</a></p>
 ]]></content>
   </entry>
@@ -703,7 +703,7 @@ int main(int argc, char* argv[])
 
 <h3>问题整理</h3>
 
-<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x67;&#x69;&#x74;&#x40;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#x2e;&#x63;&#111;&#x6d;">&#x67;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
+<p><strong>部署失败 [error: failed to push some refs to <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;">&#x67;&#x69;&#x74;&#64;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;</a> xxxx&#8217;]</strong>(<a href="http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress">http://stackoverflow.com/questions/21356212/failed-to-deploy-to-github-pages-using-octopress</a>)</p>
 
 <p><strong>解决方法</strong></p>
 
