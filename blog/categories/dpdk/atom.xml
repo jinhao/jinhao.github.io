@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Dpdk | i4box's Blog]]></title>
   <link href="http://i4box.com/blog/categories/dpdk/atom.xml" rel="self"/>
   <link href="http://i4box.com/"/>
-  <updated>2017-12-01T15:39:52+08:00</updated>
+  <updated>2017-12-01T15:43:03+08:00</updated>
   <id>http://i4box.com/</id>
   <author>
     <name><![CDATA[i4box]]></name>
@@ -25,19 +25,21 @@
 <pre><code>参考 [DPDK安装详解与问题记录](http://www.i4box.com/blog/2017/08/21/dpdk-plus-ovsan-zhuang-xiang-jie/)
 </code></pre>
 
+<!-- more -->
+
+
 <h3>启动OVS</h3>
 
-<ol>
-<li><p>./configure &ndash;with-dpdk=$DPDK_BUILD &ndash;prefix=/usr &ndash;localstatedir=/var &ndash;sysconfdir=/etc</p></li>
-<li><p>make &amp; make install</p></li>
-<li><p>export PATH=$PATH:/usr/share/openvswitch/scripts
-export DB_SOCK=/var/run/openvswitch/db.sock</p></li>
-<li><p>ovs-ctl &ndash;no-ovs-vswitchd start</p></li>
-<li><p>ovs-vsctl &ndash;no-wait set Open_vSwitch . other_config:dpdk-init=true
-ovs-ctl &ndash;no-ovsdb-server &ndash;db-sock=&ldquo;$DB_SOCK&rdquo; start
-到此，支持dpdk的ovs启动成功。</p></li>
-</ol>
+<pre><code>1.  ./configure --with-dpdk=$DPDK_BUILD --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+2.  make &amp; make install
+3.  export PATH=$PATH:/usr/share/openvswitch/scripts
+    export DB_SOCK=/var/run/openvswitch/db.sock
+4.  ovs-ctl --no-ovs-vswitchd start
+5.  ovs-vsctl --no-wait set Open_vSwitch . other_config:dpdk-init=true
+    ovs-ctl --no-ovsdb-server --db-sock="$DB_SOCK" start
+</code></pre>
 
+<p>到此，支持dpdk的ovs启动成功。</p>
 
 <h3>创建相关网桥</h3>
 
