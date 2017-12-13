@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Linux内核参数之rp_filer - i4box&#8217;s Blog</title>
+  <title>Sriov + Dpdk测试 - i4box&#8217;s Blog</title>
   <meta name="author" content="i4box">
 
   
-  <meta name="description" content="参考 http://blog.clanzx.net/2013/08/22/rp_filter.html
-http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/
-http://blog.csdn.net/ &hellip;">
-  <meta name="keywords" content="内核 rp_filer">
+  <meta name="description" content="简介 SRIOV是一种虚拟化硬件加速方案，支持SRIOV功能的网卡，可以从一个物理端口(PF),新虚拟出多个虚拟端口(VF),每个VF具有独享的PCI配置区域，与其他VF共享相同的物理资源或物理网口；
+从逻辑上可以认为开启SR- &hellip;">
+  <meta name="keywords" content="sriov dpdk">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +19,7 @@ http://blog.csdn.net/ &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://i4box.com/blog/2017/11/01/linuxnei-he-can-shu-zhi-rp-filer">
+  <link rel="canonical" href="http://i4box.com/blog/2017/12/13/sriov-plus-dpdkce-shi">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i4box's Blog" type="application/atom+xml">
@@ -76,7 +75,7 @@ http://blog.csdn.net/ &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Linux内核参数之rp_filer</h1>
+      <h1 class="entry-title">Sriov + Dpdk测试</h1>
     
     
       <p class="meta">
@@ -85,18 +84,92 @@ http://blog.csdn.net/ &hellip;">
 
 
 
-<time class='entry-date' datetime='2017-11-01T23:54:38+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>11:54 pm</span></time>
+<time class='entry-date' datetime='2017-12-13T13:00:25+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>1:00 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>参考</h2>
+<div class="entry-content"><h2>简介</h2>
 
-<p><a href="http://blog.clanzx.net/2013/08/22/rp_filter.html">http://blog.clanzx.net/2013/08/22/rp_filter.html</a>
-<a href="http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/">http://zhaofuguang.blog.163.com/blog/static/378733032013812104229725/</a>
-<a href="http://blog.csdn.net/hshl1214/article/details/53103739">http://blog.csdn.net/hshl1214/article/details/53103739</a></p>
+<p>SRIOV是一种虚拟化硬件加速方案，支持SRIOV功能的网卡，可以从一个物理端口(PF),新虚拟出多个虚拟端口(VF),每个VF具有独享的PCI配置区域，与其他VF共享相同的物理资源或物理网口；
+从逻辑上可以认为开启SR-IOV后的物理网卡内置了一个定制的Switch将所有的PF和VF口连接起来，通过VF和PF的mac地址以及vlanid来进行数据包分发。</p>
+
+<!-- more -->
+
+
+<ol>
+<li>入方向（从外部进入网卡）上，数据包分发机制是：如果数据包的目的mac地址和vlanid都匹配某一个VF，那么数据包会分发到该VF，否则数据包会进入PF；如果数据包的目的mac地址是广播地址，那么数据包会在同一个vlan内广播（即所有vlanid=数据包vlanid的VF，都会收到该数据包）。</li>
+<li>出方向（从PF或者VF发出）上：如果数据包的mac地址不匹配同一vlan内的任何端口（VF或PF），那么数据包会向网卡外部转发，否则会直接转发给对应的端口；如果数据包的mac地址为广播地址，那么数据包会在同一个vlan内以及向网卡外部广播。
+<em>注：所有未设置vlanid的VF和PF，可以认为是在同一个“vlan”中，不带vlan的数据包在该“vlan”中按照上述规则进行处理</em>
+<em>参考: <a href="http://www.jianshu.com/p/9bf690956d7d">http://www.jianshu.com/p/9bf690956d7d</a></em></li>
+</ol>
+
+
+<h2>开启SRIOV</h2>
+
+<ol>
+<li>确定网卡是否支持SRIOV特性，像Intel的X722、X710、82599都是支持的；</li>
+<li>BIOS中开启SRIOV特性，大部分服务器默认开启；</li>
+</ol>
+
+
+<h2>配置SRIOV</h2>
+
+<p>测试环境：CentOS7.3 内核：3.10  网卡：Intel X710</p>
+
+<pre><code>开启两个PF(enp95s0f1是网卡名)
+echo 2 &gt; /sys/class/net/enp95s0f1/device/sriov_numvfs
+
+查看该网卡最多支持配置的VF个数
+cat /sys/class/net/enp95s0f1/device/sriov_totalvfs
+</code></pre>
+
+<p>配置完成之后，查看分出来的VF网卡</p>
+
+<pre><code>ip link show
+</code></pre>
+
+<p><img src="/images/2017/12/sriov-ip-link-show.png" alt="ip link show " /></p>
+
+<h2>SRIOV + DPDK</h2>
+
+<ol>
+<li><p>将网卡绑定到dpdk igb_uio驱动</p>
+
+<p> ./dpdk-devbind.py &ndash;bind=igb_uio 0000:5f:00.1</p></li>
+<li><p>配置SRIOV，分出VF</p>
+
+<p> echo 2 > /sys/bus/pci/devices/0000:5f:00.1/max_vfs</p></li>
+<li><p>将网卡PF面挂到OVS</p>
+
+<p> ovs-vsctl &ndash;timeout 10 add-port br-phy dpdk0 &ndash; set Interface dpdk0 type=dpdk options:dpdk-devargs=0000:5f:00.1</p></li>
+</ol>
+
+
+<p>此时，OVS可以通过该网卡DPDK + PF面进行通信,分离出的VF网卡可以用于直接透传给虚机使用，或其他用途，如分给存储面用。</p>
+
+<h2>网卡bond</h2>
+
+<p>目标：将2张10G网卡通过SRIOV切分出PF面和VF面，PF面bond，通过dpdk挂载到ovs，做为数据面用，VF网卡用于虚机透传和存储。</p>
+
+<ol>
+<li><p>两张网卡都通过上面的步骤，挂到dpdk的igb_uio驱动，分出VF面；</p></li>
+<li><p>将两个PF面bond到ovs上</p>
+
+<p> ovs-vsctl add-bond br-phy dpdkbond p0 p1 &ndash; set Interface p0 type=dpdk options:dpdk-devargs=0000:5f:00.0 &ndash; set Interface p1 type=dpdk options:dpdk-devargs=0000:5f:00.1</p></li>
+<li><p>设置bond模式</p>
+
+<p> ovs-vsctl set port dpdkbond bond_mode=balance-slb</p></li>
+</ol>
+
+
+<h2>参考</h2>
+
+<p><a href="http://blog.51cto.com/maomaostyle/1439651">http://blog.51cto.com/maomaostyle/1439651</a><br/>
+<a href="http://www.jianshu.com/p/9bf690956d7d">http://www.jianshu.com/p/9bf690956d7d</a> <br/>
+<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_openstack_platform/7/html/director_installation_and_usage/app-bonding_options">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_openstack_platform/7/html/director_installation_and_usage/app-bonding_options</a></p>
 </div>
 
 
@@ -112,12 +185,12 @@ http://blog.csdn.net/ &hellip;">
 
 
 
-<time class='entry-date' datetime='2017-11-01T23:54:38+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>11:54 pm</span></time>
+<time class='entry-date' datetime='2017-12-13T13:00:25+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>1:00 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/nei-he/'>内核</a>
+    <a class='category' href='/blog/categories/dpdk/'>dpdk</a>, <a class='category' href='/blog/categories/openstack/'>openstack</a>
   
 </span>
 
@@ -157,10 +230,8 @@ var jiathis_config = {data_track_clickback:'true'};
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2017/09/04/dpdk-plus-ovsan-zhuang-xiang-jie-yu-wen-ti-ji-lu-(xia-)/" title="Previous Post: dpdk + ovs安装详解与问题记录（下）">&laquo; dpdk + ovs安装详解与问题记录（下）</a>
+        <a class="basic-alignment left" href="/blog/2017/11/27/dpdkdui-jie-openstack/" title="Previous Post: dpdk对接openstack">&laquo; dpdk对接openstack</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2017/11/27/dpdkdui-jie-openstack/" title="Next Post: dpdk对接openstack">dpdk对接openstack &raquo;</a>
       
     </p>
   </footer>
